@@ -4,940 +4,1024 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GFG Event Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #1a1510;
-    --bg2: #211c15;
-    --surface: #2a2219;
-    --surface2: #332a1e;
-    --border: #4a3d2a;
-    --border-light: #5a4d3a;
-    --gold: #c9a84c;
-    --gold-light: #e0c070;
-    --gold-dim: #7a6030;
-    --green: #4a7a52;
-    --green-light: #6aaa72;
-    --green-dim: #2a4a30;
-    --red: #a04040;
-    --red-light: #c06060;
-    --mushroom: #8a7060;
-    --mushroom-light: #b09080;
-    --text: #e8ddc8;
-    --text-soft: #c8b898;
-    --text-muted: #8a7a60;
-    --font-body: 'Atkinson Hyperlegible', sans-serif;
-    --font-display: 'Playfair Display', serif;
-  }
+:root {
+  --bg:        #18161200;
+  --bg-solid:  #181612;
+  --s1:        #201e19;
+  --s2:        #2a2720;
+  --s3:        #343028;
+  --border:    #3d3830;
+  --border2:   #4d4840;
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  --amber:     #c8922a;
+  --amber-l:   #dba84a;
+  --amber-d:   #7a5818;
+  --sage:      #6a9470;
+  --sage-l:    #8ab890;
+  --sage-d:    #3a5c40;
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-body);
-    font-size: 15px;
-    line-height: 1.6;
-    min-height: 100vh;
-    background-image:
-      radial-gradient(ellipse at 0% 0%, #2a3a1a22 0%, transparent 50%),
-      radial-gradient(ellipse at 100% 100%, #3a2a1022 0%, transparent 50%);
-  }
+  --red:       #8a3a3a;
+  --red-l:     #b05050;
+  --blue:      #4a6890;
+  --blue-l:    #6a88b0;
 
-  ::-webkit-scrollbar { width: 8px; }
-  ::-webkit-scrollbar-track { background: var(--bg2); }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  --text:      #ddd8cc;
+  --text-s:    #b8b0a0;
+  --text-m:    #807868;
 
-  /* LOGIN */
-  #login-screen {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 28px;
-    padding: 24px;
-  }
+  --ff-head: 'Lora', serif;
+  --ff-body: 'Nunito', sans-serif;
+  --r: 10px;
+}
 
-  .login-emblem { text-align: center; }
-  .login-emblem-icon { font-size: 40px; display: block; margin-bottom: 8px; filter: drop-shadow(0 0 12px #c9a84c55); }
-  .login-subtitle { font-size: 12px; color: var(--text-muted); letter-spacing: 0.18em; text-transform: uppercase; }
-  .login-title { font-family: var(--font-display); font-size: 36px; font-weight: 700; color: var(--gold-light); text-align: center; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  .login-box {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 36px;
-    width: 100%;
-    max-width: 460px;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    box-shadow: 0 8px 40px #00000055;
-  }
+body {
+  background: var(--bg-solid);
+  color: var(--text);
+  font-family: var(--ff-body);
+  font-size: 15px;
+  line-height: 1.65;
+  min-height: 100vh;
+}
 
-  .login-box-title { font-family: var(--font-display); font-size: 18px; color: var(--text-soft); margin-bottom: 4px; }
+::-webkit-scrollbar { width: 7px; height: 7px; }
+::-webkit-scrollbar-track { background: var(--s1); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 99px; }
 
-  .field label { display: block; font-size: 13px; font-weight: 700; color: var(--text-soft); margin-bottom: 6px; }
-  .field input {
-    width: 100%; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px;
-    padding: 11px 14px; color: var(--text); font-family: var(--font-body); font-size: 14px; outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  .field input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px #c9a84c22; }
+/* =========  LOGIN  ========= */
+#login-screen {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 24px; padding: 24px;
+  background: radial-gradient(ellipse at 40% 20%, #3a4a3022 0%, transparent 55%),
+              radial-gradient(ellipse at 70% 80%, #4a380a18 0%, transparent 55%);
+}
 
-  #login-error {
-    color: var(--red-light); font-size: 13px; text-align: center; display: none;
-    background: #a0404022; border: 1px solid var(--red); border-radius: 6px; padding: 8px 12px;
-  }
+.login-glyph { font-size: 44px; filter: drop-shadow(0 0 14px #c8922a55); text-align: center; }
+.login-eyebrow { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--text-m); text-align: center; margin-top: 4px; }
+.login-title { font-family: var(--ff-head); font-size: 34px; font-weight: 600; color: var(--amber-l); text-align: center; line-height: 1.2; }
 
-  .login-hint { font-size: 12px; color: var(--text-muted); text-align: center; line-height: 1.5; }
+.login-card {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px;
+  width: 100%; max-width: 440px;
+  display: flex; flex-direction: column; gap: 16px;
+  box-shadow: 0 12px 48px #00000060;
+}
 
-  /* BUTTONS */
-  .btn {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: var(--gold); color: #1a1510; border: none; border-radius: 8px;
-    padding: 11px 22px; font-family: var(--font-body); font-size: 14px; font-weight: 700;
-    cursor: pointer; transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
-    letter-spacing: 0.02em;
-  }
-  .btn:hover { background: var(--gold-light); box-shadow: 0 2px 12px #c9a84c44; }
-  .btn:active { transform: scale(0.97); }
-  .btn.secondary { background: var(--surface2); color: var(--text-soft); border: 1px solid var(--border); box-shadow: none; }
-  .btn.secondary:hover { background: var(--border); color: var(--text); }
-  .btn.danger { background: var(--red); color: var(--text); }
-  .btn.danger:hover { background: var(--red-light); }
-  .btn.success { background: var(--green); color: var(--text); }
-  .btn.success:hover { background: var(--green-light); }
-  .btn.small { padding: 7px 14px; font-size: 13px; border-radius: 6px; }
-  .btn.full { width: 100%; justify-content: center; }
+.login-card-heading { font-family: var(--ff-head); font-size: 17px; color: var(--text-s); font-style: italic; }
 
-  /* APP */
-  #app { display: none; min-height: 100vh; }
+.fld label { display: block; font-size: 13px; font-weight: 700; color: var(--text-s); margin-bottom: 6px; }
+.fld input {
+  width: 100%; background: var(--bg-solid); border: 1px solid var(--border);
+  border-radius: 8px; padding: 10px 14px; color: var(--text);
+  font-family: var(--ff-body); font-size: 14px; outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+.fld input:focus { border-color: var(--amber); box-shadow: 0 0 0 3px #c8922a20; }
 
-  .topbar {
-    background: var(--surface); border-bottom: 1px solid var(--border);
-    padding: 0 28px; display: flex; align-items: center; justify-content: space-between;
-    height: 60px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 16px #00000044;
-  }
+#login-err {
+  display: none; background: #6a202020; border: 1px solid var(--red);
+  border-radius: 8px; padding: 9px 13px; font-size: 13px; color: var(--red-l); text-align: center;
+}
+.login-note { font-size: 12px; color: var(--text-m); text-align: center; line-height: 1.5; }
 
-  .topbar-brand { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--gold-light); display: flex; align-items: center; gap: 10px; }
+/* =========  BUTTONS  ========= */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--amber); color: #17140e;
+  border: none; border-radius: 8px; padding: 10px 20px;
+  font-family: var(--ff-body); font-size: 14px; font-weight: 700;
+  cursor: pointer; letter-spacing: .01em;
+  transition: background .15s, box-shadow .15s, transform .1s;
+}
+.btn:hover { background: var(--amber-l); box-shadow: 0 2px 14px #c8922a40; }
+.btn:active { transform: scale(.97); }
 
-  .event-badge { font-size: 12px; font-weight: 700; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 3px 12px; color: var(--text-muted); }
-  .event-badge.active { border-color: var(--green); color: var(--green-light); background: #2a4a3022; }
-  .event-badge.ended { border-color: var(--red); color: var(--red-light); background: #4a202022; }
+.btn.green  { background: var(--sage);  color: #0e160f; }
+.btn.green:hover { background: var(--sage-l); }
+.btn.red    { background: var(--red);   color: var(--text); }
+.btn.red:hover { background: var(--red-l); }
+.btn.ghost  { background: var(--s3); color: var(--text-s); border: 1px solid var(--border); box-shadow: none; }
+.btn.ghost:hover { background: var(--border); color: var(--text); }
+.btn.sm  { padding: 6px 13px; font-size: 13px; border-radius: 6px; }
+.btn.full { width: 100%; justify-content: center; }
 
-  .topbar-right { display: flex; align-items: center; gap: 8px; }
+/* =========  APP SHELL  ========= */
+#app { display: none; }
 
-  .tabs {
-    background: var(--bg2); border-bottom: 1px solid var(--border);
-    padding: 0 28px; display: flex; gap: 4px; overflow-x: auto;
-  }
+.topbar {
+  position: sticky; top: 0; z-index: 200;
+  background: var(--s1); border-bottom: 1px solid var(--border);
+  height: 58px; padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  box-shadow: 0 2px 20px #00000050;
+}
+.topbar-brand { font-family: var(--ff-head); font-size: 19px; font-weight: 600; color: var(--amber-l); display: flex; align-items: center; gap: 10px; }
 
-  .tab {
-    padding: 14px 20px; font-size: 14px; font-weight: 700; color: var(--text-muted);
-    cursor: pointer; border-bottom: 3px solid transparent;
-    transition: color 0.2s, border-color 0.2s; white-space: nowrap;
-  }
-  .tab:hover { color: var(--text-soft); }
-  .tab.active { color: var(--gold-light); border-bottom-color: var(--gold); }
+.badge {
+  font-size: 12px; font-weight: 700; border-radius: 99px;
+  padding: 3px 12px; border: 1px solid var(--border); background: var(--s2); color: var(--text-m);
+}
+.badge.on  { border-color: var(--sage); color: var(--sage-l); background: #2a4a2e22; }
+.badge.off { border-color: var(--red);  color: var(--red-l);  background: #4a1a1a22; }
 
-  .main { padding: 28px; max-width: 1120px; margin: 0 auto; }
-  .tab-panel { display: none; }
-  .tab-panel.active { display: block; }
+.topbar-r { display: flex; align-items: center; gap: 8px; }
 
-  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
-  .section-title { font-family: var(--font-display); font-size: 20px; font-weight: 600; color: var(--text-soft); font-style: italic; }
-  .section-label { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.5; }
+.tabs {
+  background: var(--s2); border-bottom: 1px solid var(--border);
+  display: flex; padding: 0 24px; gap: 2px; overflow-x: auto;
+}
+.tab {
+  padding: 13px 18px; font-size: 14px; font-weight: 700; color: var(--text-m);
+  cursor: pointer; border-bottom: 3px solid transparent;
+  transition: color .15s, border-color .15s; white-space: nowrap;
+}
+.tab:hover { color: var(--text-s); }
+.tab.on { color: var(--amber-l); border-bottom-color: var(--amber); }
 
-  /* STATS */
-  .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 24px; }
+.main { padding: 24px; max-width: 1140px; margin: 0 auto; }
+.panel { display: none; }
+.panel.on { display: block; }
 
-  .stat-card {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
-    padding: 18px 20px; position: relative; overflow: hidden;
-  }
-  .stat-card::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, var(--gold-dim), var(--gold)); opacity: 0.6;
-  }
-  .stat-label { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
-  .stat-value { font-family: var(--font-display); font-size: 32px; font-weight: 700; line-height: 1; color: var(--gold-light); }
-  .stat-value.green { color: var(--green-light); }
-  .stat-value.md { font-size: 20px; padding-top: 6px; color: var(--text-soft); }
-  .stat-sub { font-size: 12px; color: var(--text-muted); margin-top: 5px; }
+/* =========  SECTION  ========= */
+.sec-head { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+.sec-title { font-family: var(--ff-head); font-size: 20px; font-weight: 500; color: var(--text-s); font-style: italic; }
+.sec-note { font-size: 13px; color: var(--text-m); margin-bottom: 16px; line-height: 1.55; }
 
-  /* PROGRESS */
-  .progress-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 22px; margin-bottom: 24px; }
-  .progress-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
-  .progress-name { font-family: var(--font-display); font-size: 17px; font-weight: 600; color: var(--text-soft); font-style: italic; }
-  .progress-pct { font-size: 14px; font-weight: 700; color: var(--gold); }
-  .progress-track { background: var(--surface2); border-radius: 99px; height: 12px; overflow: hidden; border: 1px solid var(--border); }
-  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--green-dim), var(--gold-dim), var(--gold)); border-radius: 99px; transition: width 0.8s cubic-bezier(.4,0,.2,1); }
-  .progress-sub { margin-top: 8px; font-size: 13px; color: var(--text-muted); }
+/* =========  STATS  ========= */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 22px; }
+.stat {
+  background: var(--s1); border: 1px solid var(--border); border-radius: var(--r);
+  padding: 16px 18px; position: relative; overflow: hidden;
+}
+.stat::after { content:''; position: absolute; top:0;left:0;right:0; height:2px; background: linear-gradient(90deg,var(--amber-d),var(--amber)); }
+.stat-lbl { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--text-m); margin-bottom: 6px; }
+.stat-val { font-family: var(--ff-head); font-size: 30px; font-weight: 600; color: var(--amber-l); line-height: 1; }
+.stat-val.g { color: var(--sage-l); }
+.stat-val.sm { font-size: 18px; padding-top: 5px; color: var(--text-s); }
+.stat-sub { font-size: 12px; color: var(--text-m); margin-top: 4px; }
 
-  /* TABLE */
-  .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 24px; }
-  table { width: 100%; border-collapse: collapse; }
-  th { text-align: left; padding: 12px 18px; font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; border-bottom: 1px solid var(--border); background: var(--surface2); }
-  td { padding: 12px 18px; border-bottom: 1px solid var(--border); font-size: 14px; vertical-align: middle; color: var(--text); }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: #ffffff05; }
+/* =========  PROGRESS  ========= */
+.prog-card { background: var(--s1); border: 1px solid var(--border); border-radius: var(--r); padding: 18px 20px; margin-bottom: 22px; }
+.prog-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+.prog-name { font-family: var(--ff-head); font-size: 16px; font-style: italic; color: var(--text-s); }
+.prog-pct { font-size: 13px; font-weight: 700; color: var(--amber); }
+.prog-track { height: 11px; background: var(--s3); border-radius: 99px; overflow: hidden; border: 1px solid var(--border); }
+.prog-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--sage-d), var(--amber-d), var(--amber)); transition: width .8s cubic-bezier(.4,0,.2,1); }
+.prog-sub { font-size: 12px; color: var(--text-m); margin-top: 7px; }
 
-  .tag { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 20px; letter-spacing: 0.06em; text-transform: uppercase; }
-  .tag.sona { background: #3a2060; color: #c084fc; border: 1px solid #6040a0; }
-  .tag.rare { background: #1a3060; color: #90c0ff; border: 1px solid #3060a0; }
-  .tag.common { background: var(--green-dim); color: var(--green-light); border: 1px solid var(--green); }
+/* =========  TABLE  ========= */
+.tbl-wrap { background: var(--s1); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; margin-bottom: 22px; }
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; padding: 11px 16px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--text-m); background: var(--s2); border-bottom: 1px solid var(--border); }
+td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 14px; vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #ffffff04; }
 
-  .mono { font-family: 'Courier New', monospace; font-size: 13px; }
-  .soft { color: var(--text-soft); }
-  .muted-text { color: var(--text-muted); }
+/* =========  RARITY TAGS  ========= */
+/* Built-in defaults -- overridden per rarity via inline style */
+.rtag {
+  display: inline-block; font-size: 11px; font-weight: 700;
+  padding: 3px 10px; border-radius: 99px;
+  letter-spacing: .05em; text-transform: uppercase;
+  border: 1px solid currentColor;
+}
 
-  /* PRIZE CARDS */
-  .prize-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; margin-bottom: 24px; }
+/* =========  PRIZE CARDS  ========= */
+.prize-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px,1fr)); gap: 14px; margin-bottom: 22px; }
 
-  .prize-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-  .prize-card-head { background: var(--surface2); border-bottom: 1px solid var(--border); padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-  .prize-card-name { font-family: var(--font-display); font-size: 16px; font-weight: 600; color: var(--text); flex: 1; }
-  .prize-card-body { padding: 14px 16px; }
+.pc { background: var(--s1); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+.pc-head { background: var(--s2); border-bottom: 1px solid var(--border); padding: 13px 15px; display: flex; align-items: center; gap: 10px; }
+.pc-name { font-family: var(--ff-head); font-size: 15px; font-weight: 500; color: var(--text); flex: 1; min-width: 0; }
+.pc-body { padding: 14px 15px; display: flex; flex-direction: column; gap: 12px; }
 
-  .prize-img-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-  .prize-thumb { width: 52px; height: 52px; border-radius: 8px; object-fit: cover; border: 1px solid var(--border); background: var(--surface2); flex-shrink: 0; }
-  .prize-thumb-placeholder { width: 52px; height: 52px; border-radius: 8px; border: 1px dashed var(--border); background: var(--surface2); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+/* image row */
+.img-row { display: flex; align-items: center; gap: 10px; }
+.thumb { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; border: 1px solid var(--border); background: var(--s2); flex-shrink: 0; }
+.thumb-ph { width: 50px; height: 50px; border-radius: 8px; border: 1px dashed var(--border); background: var(--s2); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.img-input { flex: 1; background: var(--bg-solid); border: 1px solid var(--border); border-radius: 6px; padding: 7px 10px; color: var(--text); font-family: var(--ff-body); font-size: 13px; outline: none; transition: border-color .2s; }
+.img-input:focus { border-color: var(--amber); }
+.img-input::placeholder { color: var(--text-m); }
 
-  .prize-img-input {
-    flex: 1; background: var(--bg2); border: 1px solid var(--border); border-radius: 6px;
-    padding: 8px 10px; color: var(--text); font-family: var(--font-body); font-size: 13px;
-    outline: none; transition: border-color 0.2s;
-  }
-  .prize-img-input:focus { border-color: var(--gold); }
-  .prize-img-input::placeholder { color: var(--text-muted); }
+/* rarity row inside prize card */
+.rarity-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.rarity-row label { font-size: 12px; font-weight: 700; color: var(--text-m); text-transform: uppercase; letter-spacing: .08em; flex-shrink: 0; }
+.rarity-select { background: var(--bg-solid); border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; color: var(--text); font-family: var(--ff-body); font-size: 13px; font-weight: 700; outline: none; transition: border-color .2s; cursor: pointer; }
+.rarity-select:focus { border-color: var(--amber); }
 
-  .prize-slots-summary { font-size: 13px; color: var(--text-muted); margin-bottom: 10px; }
-  .prize-slots-summary strong { color: var(--gold); }
+/* slots */
+.slots-summary { font-size: 13px; color: var(--text-m); }
+.slots-summary strong { color: var(--amber); font-weight: 700; }
 
-  .artist-list { display: flex; flex-direction: column; gap: 2px; }
+/* artist rows */
+.artist-list { display: flex; flex-direction: column; }
+.arow { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-top: 1px solid var(--border); }
+.arow:first-child { border-top: none; }
+.aname { flex: 1; font-size: 14px; font-weight: 700; color: var(--text-s); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.aused { font-size: 12px; color: var(--text-m); white-space: nowrap; }
+.slot-in {
+  width: 56px; text-align: center;
+  background: var(--bg-solid); border: 1px solid var(--border); border-radius: 6px;
+  padding: 5px 6px; color: var(--text); font-family: var(--ff-body); font-size: 14px; font-weight: 700; outline: none;
+  transition: border-color .2s;
+}
+.slot-in:focus { border-color: var(--amber); }
+.rm-btn { background: none; border: none; color: var(--text-m); cursor: pointer; font-size: 16px; padding: 3px 5px; border-radius: 4px; transition: color .15s, background .15s; line-height: 1; }
+.rm-btn:hover { color: var(--red-l); background: #8a3a3a25; }
 
-  .artist-row { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-top: 1px solid var(--border); }
-  .artist-name { flex: 1; font-size: 14px; color: var(--text-soft); font-weight: 700; }
-  .artist-slots-label { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+/* add artist */
+.add-sec { border-top: 1px solid var(--border); padding-top: 11px; }
+.add-lbl { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--text-m); margin-bottom: 8px; }
+.add-fields { display: flex; gap: 6px; flex-wrap: wrap; }
+.add-fields input {
+  background: var(--bg-solid); border: 1px solid var(--border); border-radius: 6px;
+  padding: 7px 10px; color: var(--text); font-family: var(--ff-body); font-size: 13px; outline: none;
+  transition: border-color .2s; min-width: 0;
+}
+.add-fields input:focus { border-color: var(--amber); }
+.add-fields input::placeholder { color: var(--text-m); }
+.f-un { flex: 2; min-width: 80px; }
+.f-id { flex: 3; min-width: 110px; }
+.f-sl { flex: 0 0 58px; text-align: center; }
 
-  .slot-input {
-    width: 58px; background: var(--bg2); border: 1px solid var(--border); border-radius: 6px;
-    padding: 6px 8px; color: var(--text); font-family: var(--font-body); font-size: 14px;
-    font-weight: 700; text-align: center; outline: none; transition: border-color 0.2s;
-  }
-  .slot-input:focus { border-color: var(--gold); }
+/* =========  FORM SECTIONS  ========= */
+.form-card { background: var(--s1); border: 1px solid var(--border); border-radius: var(--r); padding: 22px; margin-bottom: 18px; }
+.form-card-title { font-family: var(--ff-head); font-size: 18px; font-style: italic; color: var(--text-s); margin-bottom: 16px; padding-bottom: 13px; border-bottom: 1px solid var(--border); }
 
-  .remove-artist-btn {
-    background: none; border: none; color: var(--text-muted); cursor: pointer;
-    font-size: 17px; padding: 2px 5px; border-radius: 4px; transition: color 0.2s, background 0.2s; line-height: 1;
-  }
-  .remove-artist-btn:hover { color: var(--red-light); background: #a0404022; }
+.fgrid { display: grid; gap: 16px; margin-bottom: 16px; grid-template-columns: 1fr 1fr; }
+.fgrid.c1 { grid-template-columns: 1fr; }
+.fgrid.c3 { grid-template-columns: 1fr 1fr 1fr; }
 
-  .add-artist-section { border-top: 1px solid var(--border); padding-top: 12px; margin-top: 6px; }
-  .add-artist-label { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
-  .add-artist-fields { display: flex; gap: 6px; flex-wrap: wrap; }
-  .add-artist-fields input {
-    background: var(--bg2); border: 1px solid var(--border); border-radius: 6px;
-    padding: 7px 10px; color: var(--text); font-family: var(--font-body); font-size: 13px;
-    outline: none; transition: border-color 0.2s; min-width: 0;
-  }
-  .add-artist-fields input:focus { border-color: var(--gold); }
-  .add-artist-fields input::placeholder { color: var(--text-muted); }
-  .f-username { flex: 2; min-width: 90px; }
-  .f-id { flex: 2; min-width: 110px; }
-  .f-slots { flex: 0 0 62px; text-align: center; }
+.ff { display: flex; flex-direction: column; gap: 5px; }
+.ff label { font-size: 13px; font-weight: 700; color: var(--text-s); }
+.ff .hint { font-size: 12px; color: var(--text-m); line-height: 1.4; }
+.ff input, .ff select, .ff textarea {
+  background: var(--bg-solid); border: 1px solid var(--border); border-radius: 8px;
+  padding: 9px 13px; color: var(--text); font-family: var(--ff-body); font-size: 14px; outline: none;
+  transition: border-color .2s, box-shadow .2s; width: 100%;
+}
+.ff input:focus, .ff select:focus, .ff textarea:focus { border-color: var(--amber); box-shadow: 0 0 0 3px #c8922a18; }
+.ff textarea { resize: vertical; min-height: 85px; line-height: 1.5; }
+.ff select option { background: var(--s2); }
 
-  /* FORM */
-  .form-section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 20px; }
-  .form-section-title { font-family: var(--font-display); font-size: 18px; font-weight: 600; font-style: italic; color: var(--text-soft); margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
-  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
-  .form-grid.cols-1 { grid-template-columns: 1fr; }
-  .form-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
-  .form-field { display: flex; flex-direction: column; gap: 6px; }
-  .form-field label { font-size: 13px; font-weight: 700; color: var(--text-soft); }
-  .form-field .hint { font-size: 12px; color: var(--text-muted); margin-top: -2px; line-height: 1.4; }
-  .form-field input, .form-field select, .form-field textarea {
-    background: var(--bg2); border: 1px solid var(--border); border-radius: 8px;
-    padding: 10px 14px; color: var(--text); font-family: var(--font-body); font-size: 14px;
-    outline: none; transition: border-color 0.2s, box-shadow 0.2s; width: 100%;
-  }
-  .form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: var(--gold); box-shadow: 0 0 0 3px #c9a84c18; }
-  .form-field textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
-  .form-field select option { background: var(--surface2); }
+/* danger zone */
+.danger { background: #3a151522; border: 1px solid var(--red); border-radius: var(--r); padding: 20px 22px; margin-top: 6px; }
+.danger-title { font-family: var(--ff-head); font-size: 18px; font-style: italic; color: var(--red-l); margin-bottom: 8px; }
+.danger p { font-size: 14px; color: var(--text-m); margin-bottom: 14px; line-height: 1.6; }
 
-  /* DANGER */
-  .danger-zone { background: #3a151522; border: 1px solid var(--red); border-radius: 12px; padding: 22px 24px; margin-top: 8px; }
-  .danger-zone-title { font-family: var(--font-display); font-size: 18px; font-weight: 600; font-style: italic; color: var(--red-light); margin-bottom: 8px; }
-  .danger-zone p { font-size: 14px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.6; }
+/* =========  RARITY MANAGER  ========= */
+.rarity-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.rarity-item {
+  background: var(--s2); border: 1px solid var(--border); border-radius: 8px;
+  padding: 12px 14px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+.rarity-preview { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 160px; }
+.rarity-color-swatch { width: 18px; height: 18px; border-radius: 4px; border: 1px solid var(--border2); flex-shrink: 0; }
+.rarity-name-val { font-size: 14px; font-weight: 700; color: var(--text); }
+.rarity-chance { font-size: 13px; color: var(--text-m); }
 
-  /* EMPTY */
-  .empty { text-align: center; padding: 48px 20px; color: var(--text-muted); font-size: 14px; font-style: italic; }
-  .empty-icon { font-size: 32px; display: block; margin-bottom: 10px; }
+.add-rarity-fields { display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-end; }
+.add-rarity-fields input, .add-rarity-fields select {
+  background: var(--bg-solid); border: 1px solid var(--border); border-radius: 6px;
+  padding: 8px 12px; color: var(--text); font-family: var(--ff-body); font-size: 13px; outline: none;
+  transition: border-color .2s;
+}
+.add-rarity-fields input:focus, .add-rarity-fields select:focus { border-color: var(--amber); }
+.add-rarity-fields input::placeholder { color: var(--text-m); }
+.f-rname { flex: 2; min-width: 100px; }
+.f-rchance { flex: 1; min-width: 80px; }
+.f-rbg { width: 52px; height: 36px; padding: 2px; cursor: pointer; border-radius: 6px; }
+.f-rfg { width: 52px; height: 36px; padding: 2px; cursor: pointer; border-radius: 6px; }
 
-  /* TOAST */
-  #toast {
-    position: fixed; bottom: 24px; right: 24px; background: var(--surface2);
-    border: 1px solid var(--border); border-radius: 10px; padding: 14px 20px;
-    font-size: 14px; font-weight: 700; z-index: 9999; opacity: 0;
-    transform: translateY(10px); transition: opacity 0.25s, transform 0.25s;
-    pointer-events: none; max-width: 340px; box-shadow: 0 4px 24px #00000066;
-  }
-  #toast.show { opacity: 1; transform: translateY(0); }
-  #toast.ok { border-color: var(--green); color: var(--green-light); }
-  #toast.err { border-color: var(--red); color: var(--red-light); }
-  #toast.info { border-color: var(--gold); color: var(--gold-light); }
+/* new prize form */
+.add-prize-form { background: var(--s2); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+.add-prize-form .form-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+.add-prize-form input, .add-prize-form select, .add-prize-form textarea {
+  background: var(--bg-solid); border: 1px solid var(--border); border-radius: 6px;
+  padding: 8px 11px; color: var(--text); font-family: var(--ff-body); font-size: 13px; outline: none;
+  transition: border-color .2s; min-width: 0;
+}
+.add-prize-form input:focus, .add-prize-form select:focus, .add-prize-form textarea:focus { border-color: var(--amber); }
+.add-prize-form input::placeholder, .add-prize-form textarea::placeholder { color: var(--text-m); }
+.f-pname { flex: 3; min-width: 120px; }
+.f-pdesc { flex: 4; min-width: 150px; }
+.f-prarity { flex: 2; min-width: 100px; }
 
-  .cooldown-active { color: var(--gold); font-weight: 700; font-size: 13px; }
-  .cooldown-expired { color: var(--text-muted); font-size: 13px; }
+/* =========  EMPTY  ========= */
+.empty { text-align: center; padding: 44px 20px; color: var(--text-m); font-size: 14px; font-style: italic; }
+.empty-ico { font-size: 30px; display: block; margin-bottom: 10px; }
 
-  @media (max-width: 640px) {
-    .form-grid, .form-grid.cols-3 { grid-template-columns: 1fr; }
-    .stats-row { grid-template-columns: 1fr 1fr; }
-    .main { padding: 16px; }
-    .topbar, .tabs { padding: 0 16px; }
-    .prize-grid { grid-template-columns: 1fr; }
-  }
+/* =========  TOAST  ========= */
+#toast {
+  position: fixed; bottom: 22px; right: 22px; z-index: 9999;
+  background: var(--s2); border: 1px solid var(--border); border-radius: 10px;
+  padding: 13px 18px; font-size: 14px; font-weight: 700;
+  opacity: 0; transform: translateY(8px);
+  transition: opacity .22s, transform .22s;
+  pointer-events: none; max-width: 320px;
+  box-shadow: 0 4px 28px #00000060;
+}
+#toast.show { opacity: 1; transform: translateY(0); }
+#toast.ok   { border-color: var(--sage);  color: var(--sage-l); }
+#toast.err  { border-color: var(--red);   color: var(--red-l); }
+#toast.info { border-color: var(--amber); color: var(--amber-l); }
+
+/* =========  UTILS  ========= */
+.mono { font-family: 'Courier New', monospace; font-size: 13px; }
+.soft { color: var(--text-s); }
+.mt { margin-top: 16px; }
+.gap { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+@media(max-width:640px){
+  .fgrid,.fgrid.c3 { grid-template-columns: 1fr; }
+  .stats { grid-template-columns: 1fr 1fr; }
+  .main { padding: 14px; }
+  .topbar,.tabs { padding: 0 14px; }
+  .prize-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
 
+<!-- =========  LOGIN  ========= -->
 <div id="login-screen">
-  <div class="login-emblem">
-    <span class="login-emblem-icon">🌿</span>
-    <div class="login-subtitle">Greenfire Gallery</div>
+  <div>
+    <div class="login-glyph">🌿</div>
+    <div class="login-eyebrow">Greenfire Gallery</div>
   </div>
   <div class="login-title">Event Dashboard</div>
-  <div class="login-box">
-    <div class="login-box-title">Connect to your database</div>
-    <div class="field">
+  <div class="login-card">
+    <div class="login-card-heading">Connect to your database</div>
+    <div class="fld">
       <label>Supabase Project URL</label>
-      <input type="text" id="sb-url" placeholder="https://xxxx.supabase.co" autocomplete="off" spellcheck="false">
+      <input id="sb-url" type="text" placeholder="https://xxxx.supabase.co" autocomplete="off" spellcheck="false">
     </div>
-    <div class="field">
+    <div class="fld">
       <label>Supabase Anon Key</label>
-      <input type="password" id="sb-key" placeholder="eyJh..." autocomplete="off" spellcheck="false">
+      <input id="sb-key" type="password" placeholder="eyJh..." autocomplete="off">
     </div>
-    <div id="login-error">Could not connect. Check your URL and key and try again.</div>
+    <div id="login-err">Could not connect. Double-check your URL and key.</div>
     <button class="btn full" onclick="doLogin()">Connect</button>
   </div>
-  <div class="login-hint">Your credentials are saved in your browser only and never sent anywhere else.</div>
+  <div class="login-note">Credentials are saved in your browser only and never sent anywhere else.</div>
 </div>
 
+<!-- =========  APP  ========= -->
 <div id="app">
   <div class="topbar">
     <div class="topbar-brand">🌿 GFG Dashboard</div>
-    <div style="display:flex;align-items:center;gap:10px;">
-      <div class="event-badge" id="event-status-badge">Loading...</div>
-      <div class="topbar-right">
-        <button class="btn secondary small" onclick="refreshAll()">↺ Refresh</button>
-        <button class="btn secondary small" onclick="doLogout()">Logout</button>
+    <div class="gap">
+      <div class="badge" id="ev-badge">Loading...</div>
+      <div class="topbar-r">
+        <button class="btn ghost sm" onclick="refreshAll()">↺ Refresh</button>
+        <button class="btn ghost sm" onclick="doLogout()">Logout</button>
       </div>
     </div>
   </div>
 
   <div class="tabs">
-    <div class="tab active" onclick="switchTab('overview')">🏠 Overview</div>
-    <div class="tab" onclick="switchTab('wins')">🥚 Wins</div>
-    <div class="tab" onclick="switchTab('prizes')">🎨 Prizes & Artists</div>
-    <div class="tab" onclick="switchTab('cooldowns')">⏳ Cooldowns</div>
-    <div class="tab" onclick="switchTab('config')">⚙️ Event Config</div>
+    <div class="tab on"  onclick="go('overview')">🏠 Overview</div>
+    <div class="tab"     onclick="go('wins')">🥚 Wins</div>
+    <div class="tab"     onclick="go('prizes')">🎨 Prizes & Artists</div>
+    <div class="tab"     onclick="go('rarities')">✨ Rarities</div>
+    <div class="tab"     onclick="go('cooldowns')">⏳ Cooldowns</div>
+    <div class="tab"     onclick="go('config')">⚙️ Event Config</div>
   </div>
 
   <div class="main">
 
     <!-- OVERVIEW -->
-    <div class="tab-panel active" id="panel-overview">
-      <div class="stats-row">
-        <div class="stat-card">
-          <div class="stat-label">Total Eggs</div>
-          <div class="stat-value" id="stat-total">--</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Claimed</div>
-          <div class="stat-value green" id="stat-claimed">--</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Remaining</div>
-          <div class="stat-value" id="stat-remaining">--</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">On Cooldown</div>
-          <div class="stat-value" id="stat-cooldowns">--</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Event Ends</div>
-          <div class="stat-value md" id="stat-enddate">--</div>
-          <div class="stat-sub" id="stat-enddate-sub"></div>
-        </div>
+    <div class="panel on" id="panel-overview">
+      <div class="stats" id="stats-row">
+        <div class="stat"><div class="stat-lbl">Total Prizes</div><div class="stat-val" id="s-total">--</div></div>
+        <div class="stat"><div class="stat-lbl">Claimed</div><div class="stat-val g" id="s-claimed">--</div></div>
+        <div class="stat"><div class="stat-lbl">Remaining</div><div class="stat-val" id="s-remain">--</div></div>
+        <div class="stat"><div class="stat-lbl">On Cooldown</div><div class="stat-val" id="s-cd">--</div></div>
+        <div class="stat"><div class="stat-lbl">Event Ends</div><div class="stat-val sm" id="s-end">--</div><div class="stat-sub" id="s-end-sub"></div></div>
       </div>
 
-      <div class="progress-wrap">
-        <div class="progress-top">
-          <div class="progress-name" id="progress-event-name">Egg Hunt Progress</div>
-          <div class="progress-pct" id="progress-pct">0%</div>
+      <div class="prog-card">
+        <div class="prog-top">
+          <div class="prog-name" id="prog-name">Hunt Progress</div>
+          <div class="prog-pct" id="prog-pct">0%</div>
         </div>
-        <div class="progress-track">
-          <div class="progress-fill" id="progress-fill" style="width:0%"></div>
-        </div>
-        <div class="progress-sub" id="progress-sub"></div>
+        <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+        <div class="prog-sub" id="prog-sub"></div>
       </div>
 
-      <div class="section-header">
-        <div class="section-title">Recent wins</div>
-      </div>
-      <div class="table-wrap">
+      <div class="sec-head"><div class="sec-title">Recent wins</div></div>
+      <div class="tbl-wrap">
         <table>
-          <thead><tr><th>Winner</th><th>Prize</th><th>Artist</th><th>When</th></tr></thead>
-          <tbody id="recent-wins-body">
-            <tr><td colspan="4" class="empty"><span class="empty-icon">🌾</span>Loading...</td></tr>
-          </tbody>
+          <thead><tr><th>Winner</th><th>Prize</th><th>Rarity</th><th>Artist</th><th>When</th></tr></thead>
+          <tbody id="tb-recent"><tr><td colspan="5" class="empty"><span class="empty-ico">🌾</span>Loading...</td></tr></tbody>
         </table>
       </div>
     </div>
 
     <!-- WINS -->
-    <div class="tab-panel" id="panel-wins">
-      <div class="section-header">
-        <div class="section-title">All wins</div>
-        <button class="btn secondary small" onclick="exportWins()">Export CSV</button>
+    <div class="panel" id="panel-wins">
+      <div class="sec-head">
+        <div class="sec-title">All wins</div>
+        <button class="btn ghost sm" onclick="exportWins()">Export CSV</button>
       </div>
-      <div class="table-wrap">
+      <div class="tbl-wrap">
         <table>
           <thead><tr><th>Winner</th><th>Prize</th><th>Rarity</th><th>Artist</th><th>Channel</th><th>When</th></tr></thead>
-          <tbody id="all-wins-body">
-            <tr><td colspan="6" class="empty"><span class="empty-icon">🌾</span>Loading...</td></tr>
-          </tbody>
+          <tbody id="tb-wins"><tr><td colspan="6" class="empty"><span class="empty-ico">🌾</span>Loading...</td></tr></tbody>
         </table>
       </div>
     </div>
 
     <!-- PRIZES & ARTISTS -->
-    <div class="tab-panel" id="panel-prizes">
-      <div class="section-header">
-        <div class="section-title">Prizes, artists & slots</div>
-        <button class="btn success" onclick="saveAllPrizes()">Save all changes</button>
+    <div class="panel" id="panel-prizes">
+      <div class="sec-head">
+        <div class="sec-title">Prizes, artists & slots</div>
+        <button class="btn green" onclick="saveAllPrizes()">Save all changes</button>
       </div>
-      <div class="section-label">Edit slot counts, update egg images, and add or remove artists per prize. Hit "Save all changes" when you are done.</div>
+      <div class="sec-note">Edit slots, update images, change rarities, and add or remove artists. Press Save when done.</div>
+
+      <!-- add new prize -->
+      <div class="form-card">
+        <div class="form-card-title">Add a new prize</div>
+        <div class="add-prize-form">
+          <div class="form-row">
+            <input class="f-pname" id="np-name" type="text" placeholder="Prize name (e.g. Daffodil Egg)">
+            <input class="f-pdesc" id="np-desc" type="text" placeholder="Description (e.g. one headshot sketch)">
+            <select class="f-prarity" id="np-rarity"></select>
+          </div>
+          <button class="btn sm" onclick="addPrize()">+ Add prize</button>
+        </div>
+      </div>
+
       <div class="prize-grid" id="prize-grid">
-        <div class="empty" style="grid-column:1/-1"><span class="empty-icon">🌿</span>Loading prizes...</div>
+        <div class="empty" style="grid-column:1/-1"><span class="empty-ico">🌿</span>Loading prizes...</div>
       </div>
-      <button class="btn success full" onclick="saveAllPrizes()">Save all changes</button>
+      <button class="btn green full mt" onclick="saveAllPrizes()">Save all changes</button>
+    </div>
+
+    <!-- RARITIES -->
+    <div class="panel" id="panel-rarities">
+      <div class="sec-head"><div class="sec-title">Rarity types</div></div>
+      <div class="sec-note">Manage the rarity tiers used across your prizes. Each rarity has its own win chance and tag colors. Changes here update the dropdowns on the Prizes tab immediately.</div>
+
+      <div class="form-card">
+        <div class="form-card-title">Current rarities</div>
+        <div class="rarity-list" id="rarity-list">
+          <div class="empty"><span class="empty-ico">✨</span>Loading...</div>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div class="form-card-title">Add a new rarity</div>
+        <div class="add-rarity-fields">
+          <input class="f-rname" id="nr-name" type="text" placeholder="Name (e.g. legendary)">
+          <input class="f-rchance" id="nr-chance" type="number" step="0.001" min="0" max="1" placeholder="Win chance (e.g. 0.001)">
+          <div style="display:flex;flex-direction:column;gap:3px;align-items:center;">
+            <span style="font-size:11px;color:var(--text-m);">Tag BG</span>
+            <input class="f-rbg" id="nr-bg" type="color" value="#2a1a40">
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px;align-items:center;">
+            <span style="font-size:11px;color:var(--text-m);">Tag text</span>
+            <input class="f-rfg" id="nr-fg" type="color" value="#c084fc">
+          </div>
+          <button class="btn sm" onclick="addRarity()">+ Add rarity</button>
+        </div>
+      </div>
     </div>
 
     <!-- COOLDOWNS -->
-    <div class="tab-panel" id="panel-cooldowns">
-      <div class="section-header">
-        <div class="section-title">Active cooldowns</div>
-        <button class="btn secondary small" onclick="clearExpiredCooldowns()">Clear expired</button>
+    <div class="panel" id="panel-cooldowns">
+      <div class="sec-head">
+        <div class="sec-title">Active cooldowns</div>
+        <button class="btn ghost sm" onclick="clearExpired()">Clear expired</button>
       </div>
-      <div class="table-wrap">
+      <div class="tbl-wrap">
         <table>
-          <thead><tr><th>User ID</th><th>Won at</th><th>Expires at</th><th>Time left</th><th></th></tr></thead>
-          <tbody id="cooldowns-body">
-            <tr><td colspan="5" class="empty"><span class="empty-icon">⏳</span>Loading...</td></tr>
-          </tbody>
+          <thead><tr><th>User ID</th><th>Won at</th><th>Expires</th><th>Time left</th><th></th></tr></thead>
+          <tbody id="tb-cd"><tr><td colspan="5" class="empty"><span class="empty-ico">⏳</span>Loading...</td></tr></tbody>
         </table>
       </div>
     </div>
 
     <!-- CONFIG -->
-    <div class="tab-panel" id="panel-config">
-      <div class="form-section">
-        <div class="form-section-title">Event settings</div>
-        <div class="form-grid">
-          <div class="form-field">
-            <label>Event Name</label>
-            <input type="text" id="cfg-event-name" placeholder="Easter Egg Hunt 2026">
-          </div>
-          <div class="form-field">
-            <label>Item Name</label>
-            <div class="hint">What people find -- egg, petal, token, coin...</div>
-            <input type="text" id="cfg-item-name" placeholder="egg">
-          </div>
-          <div class="form-field">
-            <label>End Date</label>
-            <input type="date" id="cfg-end-date">
-          </div>
-          <div class="form-field">
-            <label>Event Status</label>
-            <select id="cfg-active">
-              <option value="true">Active -- prizes are rolling</option>
-              <option value="false">Paused / Ended</option>
-            </select>
-          </div>
+    <div class="panel" id="panel-config">
+      <div class="form-card">
+        <div class="form-card-title">Event settings</div>
+        <div class="fgrid">
+          <div class="ff"><label>Event Name</label><input id="c-name" type="text" placeholder="Easter Egg Hunt 2026"></div>
+          <div class="ff"><label>Item Name</label><div class="hint">egg, petal, token, coin...</div><input id="c-item" type="text" placeholder="egg"></div>
+          <div class="ff"><label>End Date</label><input id="c-end" type="date"></div>
+          <div class="ff"><label>Status</label><select id="c-active"><option value="true">Active -- prizes rolling</option><option value="false">Paused / Ended</option></select></div>
         </div>
-        <div class="form-grid cols-1">
-          <div class="form-field">
-            <label>Closing Message</label>
-            <div class="hint">Posted to announcements when the event ends</div>
-            <textarea id="cfg-closing-msg" placeholder="The event has ended! Thank you for participating..."></textarea>
-          </div>
+        <div class="fgrid c1">
+          <div class="ff"><label>Closing Message</label><div class="hint">Posted to announcements when the event ends</div><textarea id="c-msg" placeholder="The event has ended!..."></textarea></div>
         </div>
-        <div class="form-grid cols-3">
-          <div class="form-field">
-            <label>Sona / Rare Win Chance</label>
-            <div class="hint">0.002 = 0.2% per message</div>
-            <input type="number" id="cfg-chance-sona" step="0.001" min="0" max="1">
-          </div>
-          <div class="form-field">
-            <label>Common Win Chance</label>
-            <div class="hint">0.015 = 1.5% per message</div>
-            <input type="number" id="cfg-chance-common" step="0.001" min="0" max="1">
-          </div>
-          <div class="form-field">
-            <label>Fullbody Win Chance</label>
-            <div class="hint">0.010 = 1.0% per message</div>
-            <input type="number" id="cfg-chance-fullbody" step="0.001" min="0" max="1">
-          </div>
-          <div class="form-field">
-            <label>Cooldown Duration (hours)</label>
-            <div class="hint">How long before someone can win again</div>
-            <input type="number" id="cfg-cooldown-hours" step="1" min="1">
-          </div>
+        <div class="fgrid c3">
+          <div class="ff"><label>Cooldown (hours)</label><div class="hint">Time before someone can win again</div><input id="c-cd" type="number" step="1" min="1"></div>
         </div>
         <button class="btn" onclick="saveConfig()">Save event settings</button>
       </div>
 
-      <div class="danger-zone">
-        <div class="danger-zone-title">End event early</div>
-        <p>This will mark the event as ended and stop all prize rolls. The bot will post the closing message to your announcements channel. You can undo this by setting the event status back to Active above.</p>
-        <button class="btn danger" onclick="endEventEarly()">End event now</button>
+      <div class="danger">
+        <div class="danger-title">End event early</div>
+        <p>Stops all prize rolls and posts the closing message to your announcements channel. You can undo this by setting status back to Active above.</p>
+        <button class="btn red" onclick="endEvent()">End event now</button>
       </div>
     </div>
 
-  </div>
-</div>
+  </div><!-- /main -->
+</div><!-- /app -->
 
 <div id="toast"></div>
 
 <script>
-let SB_URL = '', SB_KEY = '';
-let winsCache = [], prizeConfigCache = [], eventConfigCache = {};
+// =========  STATE  =========
+let SB = '', KEY = '';
+let winsCache = [], prizeCache = [], rarityCache = [], cfgCache = {};
 
-window.addEventListener('load', () => {
-  const u = localStorage.getItem('gfg_sb_url');
-  const k = localStorage.getItem('gfg_sb_key');
+// =========  LOGIN  =========
+addEventListener('load', () => {
+  const u = localStorage.getItem('gfg_url'), k = localStorage.getItem('gfg_key');
   if (u) document.getElementById('sb-url').value = u;
   if (k) document.getElementById('sb-key').value = k;
 });
 
 async function doLogin() {
-  const url = document.getElementById('sb-url').value.trim().replace(/\/$/, '');
+  const url = document.getElementById('sb-url').value.trim().replace(/\/$/,'');
   const key = document.getElementById('sb-key').value.trim();
-  if (!url || !key) { toast('Please fill in both fields', 'err'); return; }
+  if (!url || !key) { toast('Fill in both fields','err'); return; }
   try {
-    const res = await sbRaw(url, key, 'wins?limit=1');
-    if (!res.ok && res.status !== 200 && res.status !== 404) throw new Error();
-    SB_URL = url; SB_KEY = key;
-    localStorage.setItem('gfg_sb_url', url);
-    localStorage.setItem('gfg_sb_key', key);
+    const r = await raw(url, key, 'wins?limit=1');
+    if (!r.ok && r.status !== 200 && r.status !== 404) throw 0;
+    SB = url; KEY = key;
+    localStorage.setItem('gfg_url', url); localStorage.setItem('gfg_key', key);
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app').style.display = 'block';
-    document.getElementById('login-error').style.display = 'none';
+    document.getElementById('login-err').style.display = 'none';
     await refreshAll();
-  } catch {
-    document.getElementById('login-error').style.display = 'block';
-  }
+  } catch { document.getElementById('login-err').style.display = 'block'; }
 }
 
 function doLogout() {
-  localStorage.removeItem('gfg_sb_url');
-  localStorage.removeItem('gfg_sb_key');
-  SB_URL = ''; SB_KEY = '';
+  localStorage.removeItem('gfg_url'); localStorage.removeItem('gfg_key');
+  SB = ''; KEY = '';
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('app').style.display = 'none';
 }
 
-document.addEventListener('keydown', e => {
+addEventListener('keydown', e => {
   if (e.key === 'Enter' && document.getElementById('login-screen').style.display !== 'none') doLogin();
 });
 
-async function sbRaw(url, key, path, opts = {}) {
+// =========  SUPABASE  =========
+async function raw(url, key, path, o = {}) {
   return fetch(`${url}/rest/v1/${path}`, {
-    ...opts,
-    headers: { 'apikey': key, 'Authorization': `Bearer ${key}`, 'Content-Type': 'application/json', 'Prefer': opts.prefer || 'return=representation', ...(opts.headers || {}) }
+    ...o,
+    headers: { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json', Prefer: o.prefer || 'return=representation', ...(o.headers||{}) }
   });
 }
+const get  = async p => { const r = await raw(SB,KEY,p); if(!r.ok) throw await r.text(); return r.json(); };
+const post = async (t,b) => { const r = await raw(SB,KEY,t,{method:'POST',body:JSON.stringify(b)}); if(!r.ok) throw await r.text(); return r.json(); };
+const patch= async (p,b) => { const r = await raw(SB,KEY,p,{method:'PATCH',body:JSON.stringify(b)}); if(!r.ok) throw await r.text(); return r.json(); };
+const del  = async p => { const r = await raw(SB,KEY,p,{method:'DELETE',prefer:'return=minimal'}); if(!r.ok) throw await r.text(); };
 
-async function sbGet(path) {
-  const res = await sbRaw(SB_URL, SB_KEY, path);
-  if (!res.ok) throw new Error(await res.text());
-  return res.json();
-}
-
-async function sbPost(table, body) {
-  const res = await sbRaw(SB_URL, SB_KEY, table, { method: 'POST', body: JSON.stringify(body) });
-  if (!res.ok) throw new Error(await res.text());
-  return res.json();
-}
-
-async function sbPatch(path, body) {
-  const res = await sbRaw(SB_URL, SB_KEY, path, { method: 'PATCH', body: JSON.stringify(body) });
-  if (!res.ok) throw new Error(await res.text());
-  return res.json();
-}
-
-async function sbDelete(path) {
-  const res = await sbRaw(SB_URL, SB_KEY, path, { method: 'DELETE', prefer: 'return=minimal' });
-  if (!res.ok) throw new Error(await res.text());
-}
-
-function switchTab(name) {
-  const names = ['overview','wins','prizes','cooldowns','config'];
-  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', names[i] === name));
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === `panel-${name}`));
-  if (name === 'wins') loadAllWins();
-  if (name === 'prizes') loadPrizes();
+// =========  TABS  =========
+const TAB_ORDER = ['overview','wins','prizes','rarities','cooldowns','config'];
+function go(name) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('on', TAB_ORDER[i] === name));
+  document.querySelectorAll('.panel').forEach(p => p.classList.toggle('on', p.id === `panel-${name}`));
+  if (name === 'wins')      loadWins();
+  if (name === 'prizes')    loadPrizes();
+  if (name === 'rarities')  loadRarities();
   if (name === 'cooldowns') loadCooldowns();
-  if (name === 'config') loadConfig();
+  if (name === 'config')    loadConfig();
 }
 
 async function refreshAll() { await Promise.all([loadOverview(), loadConfig()]); }
 
+// =========  OVERVIEW  =========
 async function loadOverview() {
   try {
-    const [wins, prizes, cfgArr, cooldowns] = await Promise.all([
-      sbGet('wins?order=won_at.desc&limit=200'),
-      sbGet('prize_config?select=artists').catch(() => []),
-      sbGet('event_config?limit=1').catch(() => []),
-      sbGet('cooldowns?select=user_id,won_at').catch(() => []),
+    const [wins, prizes, cfgA, cds, rarities] = await Promise.all([
+      get('wins?order=won_at.desc&limit=200'),
+      get('prize_config?select=artists').catch(()=>[]),
+      get('event_config?limit=1').catch(()=>[]),
+      get('cooldowns?select=user_id,won_at').catch(()=>[]),
+      get('rarity_config?select=name,bg_color,text_color').catch(()=>[]),
     ]);
-    winsCache = wins;
-    const cfg = cfgArr[0] || {};
+    winsCache = wins; rarityCache = rarities;
+    const cfg = cfgA[0] || {};
 
     let total = 0;
-    for (const p of prizes) {
-      if (p.artists && p.artists.length > 0) total += p.artists.reduce((s, a) => s + (a.slots || 0), 0);
-      else total += 1;
-    }
-    if (total === 0) total = 44;
+    prizes.forEach(p => { total += p.artists?.length ? p.artists.reduce((s,a)=>s+(a.slots||0),0) : 1; });
+    if (!total) total = 44;
+    const claimed = wins.length, remaining = Math.max(0,total-claimed), pct = Math.round(claimed/total*100);
 
-    const claimed = wins.length;
-    const remaining = Math.max(0, total - claimed);
-    const pct = Math.round((claimed / total) * 100);
+    document.getElementById('s-total').textContent = total;
+    document.getElementById('s-claimed').textContent = claimed;
+    document.getElementById('s-remain').textContent = remaining;
+    document.getElementById('prog-fill').style.width = pct+'%';
+    document.getElementById('prog-pct').textContent = pct+'%';
+    document.getElementById('prog-sub').textContent = `${claimed} claimed out of ${total} total`;
+    if (cfg.event_name) document.getElementById('prog-name').textContent = cfg.event_name;
 
-    document.getElementById('stat-total').textContent = total;
-    document.getElementById('stat-claimed').textContent = claimed;
-    document.getElementById('stat-remaining').textContent = remaining;
-    document.getElementById('progress-fill').style.width = pct + '%';
-    document.getElementById('progress-pct').textContent = pct + '%';
-    document.getElementById('progress-sub').textContent = `${claimed} claimed out of ${total} total`;
-    if (cfg.event_name) document.getElementById('progress-event-name').textContent = cfg.event_name;
-
-    const cooldownMs = (cfg.cooldown_hours || 8) * 3600000;
-    const now = Date.now();
-    document.getElementById('stat-cooldowns').textContent = cooldowns.filter(c => now - new Date(c.won_at).getTime() < cooldownMs).length;
+    const cdMs = (cfg.cooldown_hours||8)*3600000, now = Date.now();
+    document.getElementById('s-cd').textContent = cds.filter(c=>now-new Date(c.won_at)<cdMs).length;
 
     if (cfg.end_date) {
       const d = new Date(cfg.end_date);
-      document.getElementById('stat-enddate').textContent = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-      const diff = Math.ceil((d - new Date()) / 86400000);
-      document.getElementById('stat-enddate-sub').textContent = diff > 0 ? `${diff} days left` : 'Ended';
+      document.getElementById('s-end').textContent = d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+      const diff = Math.ceil((d-new Date())/86400000);
+      document.getElementById('s-end-sub').textContent = diff>0?`${diff} days left`:'Ended';
     }
 
-    const badge = document.getElementById('event-status-badge');
+    const badge = document.getElementById('ev-badge');
     badge.textContent = cfg.event_active ? '● Active' : '● Ended';
-    badge.className = 'event-badge ' + (cfg.event_active ? 'active' : 'ended');
+    badge.className = 'badge '+(cfg.event_active?'on':'off');
 
-    const tbody = document.getElementById('recent-wins-body');
-    tbody.innerHTML = wins.length === 0
-      ? '<tr><td colspan="4" class="empty"><span class="empty-icon">🌾</span>No wins yet -- the hunt is still young!</td></tr>'
-      : wins.slice(0, 10).map(w => `<tr>
-          <td class="soft">${h(w.winner_tag || w.winner_discord_id)}</td>
-          <td>${h(w.prize_name)}</td>
-          <td class="muted-text">${h(w.artist_username || '--')}</td>
-          <td class="muted-text">${fmtTime(w.won_at)}</td>
-        </tr>`).join('');
-  } catch (e) { console.error(e); toast('Could not load overview', 'err'); }
+    const rMap = buildRarityMap(rarities);
+    const tbody = document.getElementById('tb-recent');
+    tbody.innerHTML = wins.length ? wins.slice(0,10).map(w=>`<tr>
+      <td class="soft">${h(w.winner_tag||w.winner_discord_id)}</td>
+      <td>${h(w.prize_name)}</td>
+      <td>${rarityTag(w.rarity,rMap)}</td>
+      <td style="color:var(--text-m)">${h(w.artist_username||'--')}</td>
+      <td style="color:var(--text-m)">${fmt(w.won_at)}</td>
+    </tr>`).join('')
+    : '<tr><td colspan="5" class="empty"><span class="empty-ico">🌾</span>No wins yet -- the hunt is still young!</td></tr>';
+  } catch(e){ console.error(e); toast('Could not load overview','err'); }
 }
 
-async function loadAllWins() {
+// =========  WINS  =========
+async function loadWins() {
   try {
-    const wins = await sbGet('wins?order=won_at.desc');
+    const [wins, rarities] = await Promise.all([get('wins?order=won_at.desc'), get('rarity_config?select=name,bg_color,text_color').catch(()=>[])]);
     winsCache = wins;
-    const tbody = document.getElementById('all-wins-body');
-    tbody.innerHTML = wins.length === 0
-      ? '<tr><td colspan="6" class="empty"><span class="empty-icon">🌾</span>No wins recorded yet</td></tr>'
-      : wins.map(w => `<tr>
-          <td class="soft">${h(w.winner_tag || w.winner_discord_id)}</td>
-          <td>${h(w.prize_name)}</td>
-          <td><span class="tag ${w.rarity || 'common'}">${w.rarity || '?'}</span></td>
-          <td class="muted-text">${h(w.artist_username || '--')}</td>
-          <td class="mono muted-text">#${w.channel_id}</td>
-          <td class="muted-text">${fmtTime(w.won_at)}</td>
-        </tr>`).join('');
-  } catch { toast('Could not load wins', 'err'); }
+    const rMap = buildRarityMap(rarities);
+    const tb = document.getElementById('tb-wins');
+    tb.innerHTML = wins.length ? wins.map(w=>`<tr>
+      <td class="soft">${h(w.winner_tag||w.winner_discord_id)}</td>
+      <td>${h(w.prize_name)}</td>
+      <td>${rarityTag(w.rarity,rMap)}</td>
+      <td style="color:var(--text-m)">${h(w.artist_username||'--')}</td>
+      <td class="mono" style="color:var(--text-m)">#${w.channel_id}</td>
+      <td style="color:var(--text-m)">${fmt(w.won_at)}</td>
+    </tr>`).join('')
+    : '<tr><td colspan="6" class="empty"><span class="empty-ico">🌾</span>No wins yet</td></tr>';
+  } catch { toast('Could not load wins','err'); }
 }
 
 function exportWins() {
-  if (!winsCache.length) { toast('No wins to export yet', 'info'); return; }
-  const cols = ['winner_tag','winner_discord_id','prize_name','rarity','artist_username','artist_discord_id','channel_id','won_at'];
-  const csv = [cols.join(','), ...winsCache.map(w => cols.map(c => `"${(w[c]||'').toString().replace(/"/g,'""')}"`).join(','))].join('\n');
-  const a = document.createElement('a');
-  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
-  a.download = 'gfg-wins.csv';
-  a.click();
-  toast('Exported!', 'ok');
+  if (!winsCache.length){ toast('No wins to export','info'); return; }
+  const cols=['winner_tag','winner_discord_id','prize_name','rarity','artist_username','artist_discord_id','channel_id','won_at'];
+  const csv=[cols.join(','),...winsCache.map(w=>cols.map(c=>`"${(w[c]||'').toString().replace(/"/g,'""')}"`).join(','))].join('\n');
+  const a=document.createElement('a'); a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv); a.download='gfg-wins.csv'; a.click();
+  toast('Exported!','ok');
 }
 
+// =========  RARITIES  =========
+async function loadRarities() {
+  try {
+    const r = await get('rarity_config?order=win_chance.desc').catch(()=>[]);
+    rarityCache = r;
+    renderRarityList(r);
+    populateRaritySelects(r);
+  } catch(e){ console.error(e); toast('Could not load rarities','err'); }
+}
+
+function renderRarityList(list) {
+  const el = document.getElementById('rarity-list');
+  if (!list.length){ el.innerHTML='<div class="empty"><span class="empty-ico">✨</span>No rarities yet -- add one below!</div>'; return; }
+  el.innerHTML = list.map(r=>`
+    <div class="rarity-item">
+      <div class="rarity-preview">
+        <div class="rarity-color-swatch" style="background:${r.bg_color};border-color:${r.text_color}"></div>
+        <span class="rtag" style="background:${r.bg_color};color:${r.text_color};border-color:${r.text_color}">${h(r.name)}</span>
+      </div>
+      <span class="rarity-chance">Win chance: ${r.win_chance}</span>
+      <div class="gap">
+        <input type="number" step="0.001" min="0" max="1" value="${r.win_chance}" style="width:90px;background:var(--bg-solid);border:1px solid var(--border);border-radius:6px;padding:5px 8px;color:var(--text);font-family:var(--ff-body);font-size:13px;outline:none;" id="rc-${r.id}">
+        <button class="btn sm" onclick="saveRarityChance('${r.id}')">Save</button>
+        <button class="btn red sm" onclick="deleteRarity('${r.id}','${a2(r.name)}')">Remove</button>
+      </div>
+    </div>`).join('');
+}
+
+function populateRaritySelects(list) {
+  const selects = document.querySelectorAll('.rarity-select, #np-rarity');
+  selects.forEach(sel => {
+    const cur = sel.value;
+    sel.innerHTML = list.map(r=>`<option value="${h(r.name)}" style="background:var(--s2)">${h(r.name)}</option>`).join('');
+    if (cur) sel.value = cur;
+  });
+}
+
+async function addRarity() {
+  const name = document.getElementById('nr-name').value.trim().toLowerCase();
+  const chance = parseFloat(document.getElementById('nr-chance').value) || 0.002;
+  const bg = document.getElementById('nr-bg').value;
+  const fg = document.getElementById('nr-fg').value;
+  if (!name){ toast('Enter a rarity name','err'); return; }
+  try {
+    await post('rarity_config', { name, win_chance: chance, bg_color: bg, text_color: fg });
+    toast(`Added rarity "${name}"!`,'ok');
+    document.getElementById('nr-name').value='';
+    await loadRarities();
+  } catch(e){ toast('Could not add rarity','err'); console.error(e); }
+}
+
+async function saveRarityChance(id) {
+  const val = parseFloat(document.getElementById(`rc-${id}`).value);
+  try {
+    await patch(`rarity_config?id=eq.${id}`, { win_chance: val });
+    toast('Win chance saved!','ok');
+    await loadRarities();
+  } catch { toast('Could not save','err'); }
+}
+
+async function deleteRarity(id, name) {
+  if (!confirm(`Remove rarity "${name}"? Prizes using it will keep the label but the chance won't apply.`)) return;
+  try {
+    await del(`rarity_config?id=eq.${id}`);
+    toast(`Removed "${name}"`, 'ok');
+    await loadRarities();
+  } catch { toast('Could not remove rarity','err'); }
+}
+
+// =========  PRIZES  =========
 async function loadPrizes() {
   const grid = document.getElementById('prize-grid');
   try {
-    const [prizes, wins] = await Promise.all([
-      sbGet('prize_config?order=rarity.asc'),
-      sbGet('wins?select=prize_id,artist_discord_id').catch(() => []),
+    const [prizes, wins, rarities] = await Promise.all([
+      get('prize_config?order=rarity.asc'),
+      get('wins?select=prize_id,artist_discord_id').catch(()=>[]),
+      get('rarity_config?order=win_chance.desc').catch(()=>[]),
     ]);
-    prizeConfigCache = prizes;
+    prizeCache = prizes; rarityCache = rarities;
+    populateRaritySelects(rarities);
 
-    const usedMap = {};
-    for (const w of wins) {
-      if (!usedMap[w.prize_id]) usedMap[w.prize_id] = {};
-      if (w.artist_discord_id) usedMap[w.prize_id][w.artist_discord_id] = (usedMap[w.prize_id][w.artist_discord_id] || 0) + 1;
-    }
+    const used = {};
+    wins.forEach(w => { if(!used[w.prize_id]) used[w.prize_id]={}; if(w.artist_discord_id) used[w.prize_id][w.artist_discord_id]=(used[w.prize_id][w.artist_discord_id]||0)+1; });
 
-    if (!prizes.length) {
-      grid.innerHTML = '<div class="empty" style="grid-column:1/-1"><span class="empty-icon">🌿</span>No prizes found. Make sure you ran the SQL setup.</div>';
-      return;
-    }
-
-    grid.innerHTML = prizes.map(p => buildPrizeCard(p, usedMap[p.prize_id] || {})).join('');
-  } catch (e) {
-    console.error(e);
-    grid.innerHTML = '<div class="empty" style="grid-column:1/-1"><span class="empty-icon">🌿</span>Could not load prizes.</div>';
-  }
+    if (!prizes.length){ grid.innerHTML='<div class="empty" style="grid-column:1/-1"><span class="empty-ico">🌿</span>No prizes found. Run the SQL setup first.</div>'; return; }
+    const rMap = buildRarityMap(rarities);
+    grid.innerHTML = prizes.map(p=>buildCard(p, used[p.prize_id]||{}, rarities, rMap)).join('');
+  } catch(e){ console.error(e); grid.innerHTML='<div class="empty" style="grid-column:1/-1"><span class="empty-ico">🌿</span>Could not load prizes.</div>'; }
 }
 
-function buildPrizeCard(p, used) {
-  const artists = p.artists || [];
-  const totalSlots = artists.reduce((s, a) => s + (a.slots || 0), 0) || (artists.length === 0 ? 1 : 0);
-  const usedTotal = Object.values(used).reduce((s, v) => s + v, 0);
-  const remaining = Math.max(0, totalSlots - usedTotal);
-  const imgSrc = p.image && p.image !== 'https://i.imgur.com/YOURIMAGE.png' ? p.image : '';
+function buildCard(p, used, rarities, rMap) {
+  const artists = p.artists||[];
+  const totalSlots = artists.reduce((s,a)=>s+(a.slots||0),0)||(artists.length?0:1);
+  const usedTotal  = Object.values(used).reduce((s,v)=>s+v,0);
+  const remaining  = Math.max(0,totalSlots-usedTotal);
+  const imgSrc     = p.image && p.image!=='https://i.imgur.com/YOURIMAGE.png' ? p.image : '';
 
-  const artistRows = artists.map(a => {
-    const u = used[a.discordId] || 0;
-    return `<div class="artist-row">
-      <span class="artist-name">@${h(a.username)}</span>
-      <span class="artist-slots-label">${u} used /</span>
-      <input class="slot-input" type="number" min="0" data-prize="${a2(p.prize_id)}" data-artist="${a2(a.discordId)}" value="${a.slots || 0}">
-      <button class="remove-artist-btn" onclick="removeArtist('${a2(p.prize_id)}','${a2(a.discordId)}')" title="Remove artist">✕</button>
+  const rarityOpts = rarities.map(r=>`<option value="${h(r.name)}" ${r.name===p.rarity?'selected':''} style="background:var(--s2)">${h(r.name)}</option>`).join('');
+
+  const artistRows = artists.map(a=>{
+    const u=used[a.discordId]||0;
+    return `<div class="arow">
+      <span class="aname">@${h(a.username)}</span>
+      <span class="aused">${u} used /</span>
+      <input class="slot-in" type="number" min="0" data-prize="${a2(p.prize_id)}" data-artist="${a2(a.discordId)}" value="${a.slots||0}">
+      <button class="rm-btn" onclick="removeArtist('${a2(p.prize_id)}','${a2(a.discordId)}')" title="Remove">✕</button>
     </div>`;
   }).join('');
 
-  return `<div class="prize-card" id="prize-card-${a2(p.prize_id)}">
-    <div class="prize-card-head">
-      <span class="prize-card-name">${h(p.name)}</span>
-      <span class="tag ${p.rarity}">${p.rarity}</span>
+  return `<div class="pc" id="pc-${a2(p.prize_id)}">
+    <div class="pc-head">
+      <span class="pc-name">${h(p.name)}</span>
+      ${rarityTag(p.rarity, rMap)}
     </div>
-    <div class="prize-card-body">
-      <div class="prize-img-row">
-        <img class="prize-thumb" src="${a2(imgSrc)}" alt="egg" style="${imgSrc ? '' : 'display:none'}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="prize-thumb-placeholder" style="${imgSrc ? 'display:none' : ''}">🥚</div>
-        <input class="prize-img-input" type="url" placeholder="Paste image URL here..." data-prize="${a2(p.prize_id)}" value="${a2(imgSrc)}" oninput="previewImg(this)" spellcheck="false">
+    <div class="pc-body">
+      <div class="img-row">
+        <img class="thumb" src="${a2(imgSrc)}" style="${imgSrc?'':'display:none'}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt="">
+        <div class="thumb-ph" style="${imgSrc?'display:none':''}">🥚</div>
+        <input class="img-input" type="url" placeholder="Paste image URL..." data-prize="${a2(p.prize_id)}" value="${a2(imgSrc)}" oninput="previewImg(this)" spellcheck="false">
       </div>
-      <div class="prize-slots-summary"><strong>${remaining}</strong> / ${totalSlots} slots remaining</div>
-      <div class="artist-list">${artistRows || '<div class="muted-text" style="font-size:13px;padding:6px 0;font-style:italic;">No artist slots</div>'}</div>
-      <div class="add-artist-section">
-        <div class="add-artist-label">Add artist</div>
-        <div class="add-artist-fields">
-          <input class="f-username" type="text" placeholder="Username" id="nu-${a2(p.prize_id)}" spellcheck="false">
+      <div class="rarity-row">
+        <label>Rarity</label>
+        <select class="rarity-select" data-prize="${a2(p.prize_id)}">${rarityOpts}</select>
+      </div>
+      <div class="slots-summary"><strong>${remaining}</strong> / ${totalSlots} slots remaining</div>
+      <div class="artist-list">${artistRows||'<div style="font-size:13px;color:var(--text-m);font-style:italic;padding:6px 0;">No artist slots</div>'}</div>
+      <div class="add-sec">
+        <div class="add-lbl">Add artist</div>
+        <div class="add-fields">
+          <input class="f-un" type="text" placeholder="Username" id="nu-${a2(p.prize_id)}" spellcheck="false">
           <input class="f-id" type="text" placeholder="Discord ID" id="nd-${a2(p.prize_id)}" spellcheck="false">
-          <input class="f-slots" type="number" min="1" value="1" id="ns-${a2(p.prize_id)}">
-          <button class="btn secondary small" onclick="addArtist('${a2(p.prize_id)}')">+ Add</button>
+          <input class="f-sl" type="number" min="1" value="1" id="ns-${a2(p.prize_id)}">
+          <button class="btn ghost sm" onclick="addArtist('${a2(p.prize_id)}')">+ Add</button>
         </div>
+      </div>
+      <div style="padding-top:8px;border-top:1px solid var(--border);">
+        <button class="btn red sm" onclick="deletePrize('${a2(p.prize_id)}','${a2(p.name)}')">Delete prize</button>
       </div>
     </div>
   </div>`;
 }
 
 function previewImg(input) {
-  const body = input.closest('.prize-card-body');
-  const img = body.querySelector('.prize-thumb');
-  const ph = body.querySelector('.prize-thumb-placeholder');
+  const body = input.closest('.pc-body');
+  const img = body.querySelector('.thumb'), ph = body.querySelector('.thumb-ph');
   const url = input.value.trim();
-  if (url) { img.src = url; img.style.display = ''; ph.style.display = 'none'; }
-  else { img.style.display = 'none'; ph.style.display = 'flex'; }
+  if (url){ img.src=url; img.style.display=''; ph.style.display='none'; }
+  else { img.style.display='none'; ph.style.display='flex'; }
+}
+
+async function addPrize() {
+  const name   = document.getElementById('np-name').value.trim();
+  const desc   = document.getElementById('np-desc').value.trim();
+  const rarity = document.getElementById('np-rarity').value;
+  if (!name){ toast('Enter a prize name','err'); return; }
+  try {
+    await post('prize_config', { prize_id: name.toLowerCase().replace(/[^a-z0-9]/g,''), name, description: desc||'', rarity: rarity||'common', artists:[], image:'https://i.imgur.com/YOURIMAGE.png' });
+    toast(`Added "${name}"!`,'ok');
+    document.getElementById('np-name').value='';
+    document.getElementById('np-desc').value='';
+    await loadPrizes();
+  } catch(e){ toast('Could not add prize','err'); console.error(e); }
+}
+
+async function deletePrize(prizeId, name) {
+  if (!confirm(`Delete "${name}"? This cannot be undone.`)) return;
+  try {
+    await del(`prize_config?prize_id=eq.${encodeURIComponent(prizeId)}`);
+    toast(`Deleted "${name}"`,'ok');
+    await loadPrizes();
+  } catch { toast('Could not delete prize','err'); }
 }
 
 async function addArtist(prizeId) {
-  const username = document.getElementById(`nu-${prizeId}`).value.trim();
+  const username  = document.getElementById(`nu-${prizeId}`).value.trim();
   const discordId = document.getElementById(`nd-${prizeId}`).value.trim();
-  const slots = parseInt(document.getElementById(`ns-${prizeId}`).value) || 1;
-  if (!username || !discordId) { toast('Enter both a username and a Discord ID', 'err'); return; }
-  const prize = prizeConfigCache.find(p => p.prize_id === prizeId);
+  const slots     = parseInt(document.getElementById(`ns-${prizeId}`).value)||1;
+  if (!username||!discordId){ toast('Enter both username and Discord ID','err'); return; }
+  const prize = prizeCache.find(p=>p.prize_id===prizeId);
   if (!prize) return;
-  if ((prize.artists || []).find(a => a.discordId === discordId)) { toast('That artist is already on this prize', 'err'); return; }
-  prize.artists = [...(prize.artists || []), { username, discordId, slots }];
+  if ((prize.artists||[]).find(a=>a.discordId===discordId)){ toast('That artist is already on this prize','err'); return; }
+  prize.artists = [...(prize.artists||[]), {username,discordId,slots}];
   try {
-    await sbPatch(`prize_config?prize_id=eq.${encodeURIComponent(prizeId)}`, { artists: prize.artists });
-    toast(`Added @${username}!`, 'ok');
+    await patch(`prize_config?prize_id=eq.${encodeURIComponent(prizeId)}`, {artists:prize.artists});
+    toast(`Added @${username}!`,'ok');
     await loadPrizes();
-  } catch (e) { toast('Could not save artist', 'err'); console.error(e); }
+  } catch(e){ toast('Could not save artist','err'); console.error(e); }
 }
 
 async function removeArtist(prizeId, discordId) {
   if (!confirm('Remove this artist from the prize?')) return;
-  const prize = prizeConfigCache.find(p => p.prize_id === prizeId);
+  const prize = prizeCache.find(p=>p.prize_id===prizeId);
   if (!prize) return;
-  prize.artists = (prize.artists || []).filter(a => a.discordId !== discordId);
+  prize.artists = (prize.artists||[]).filter(a=>a.discordId!==discordId);
   try {
-    await sbPatch(`prize_config?prize_id=eq.${encodeURIComponent(prizeId)}`, { artists: prize.artists });
-    toast('Artist removed', 'ok');
+    await patch(`prize_config?prize_id=eq.${encodeURIComponent(prizeId)}`, {artists:prize.artists});
+    toast('Artist removed','ok');
     await loadPrizes();
-  } catch { toast('Could not remove artist', 'err'); }
+  } catch { toast('Could not remove artist','err'); }
 }
 
 async function saveAllPrizes() {
   try {
-    const slotInputs = document.querySelectorAll('.slot-input');
-    const slotChanges = {};
-    slotInputs.forEach(i => {
-      if (!slotChanges[i.dataset.prize]) slotChanges[i.dataset.prize] = {};
-      slotChanges[i.dataset.prize][i.dataset.artist] = parseInt(i.value) || 0;
-    });
+    const slotInputs = document.querySelectorAll('.slot-in');
+    const slotMap = {};
+    slotInputs.forEach(i=>{ if(!slotMap[i.dataset.prize]) slotMap[i.dataset.prize]={}; slotMap[i.dataset.prize][i.dataset.artist]=parseInt(i.value)||0; });
 
-    const imgInputs = document.querySelectorAll('.prize-img-input');
-    const imgChanges = {};
-    imgInputs.forEach(i => { imgChanges[i.dataset.prize] = i.value.trim() || 'https://i.imgur.com/YOURIMAGE.png'; });
+    const imgInputs = document.querySelectorAll('.img-input');
+    const imgMap = {};
+    imgInputs.forEach(i=>{ imgMap[i.dataset.prize]=i.value.trim()||'https://i.imgur.com/YOURIMAGE.png'; });
 
-    for (const prize of prizeConfigCache) {
-      const updatedArtists = (prize.artists || []).map(a => ({
-        ...a,
-        slots: slotChanges[prize.prize_id]?.[a.discordId] !== undefined ? slotChanges[prize.prize_id][a.discordId] : a.slots
-      }));
-      await sbPatch(`prize_config?prize_id=eq.${encodeURIComponent(prize.prize_id)}`, {
-        artists: updatedArtists,
-        image: imgChanges[prize.prize_id] || prize.image,
+    const raritySelects = document.querySelectorAll('.rarity-select');
+    const rarityMap = {};
+    raritySelects.forEach(s=>{ rarityMap[s.dataset.prize]=s.value; });
+
+    for (const prize of prizeCache) {
+      const updArtists = (prize.artists||[]).map(a=>({...a, slots: slotMap[prize.prize_id]?.[a.discordId]??a.slots}));
+      await patch(`prize_config?prize_id=eq.${encodeURIComponent(prize.prize_id)}`, {
+        artists: updArtists,
+        image:   imgMap[prize.prize_id]||prize.image,
+        rarity:  rarityMap[prize.prize_id]||prize.rarity,
       });
     }
-    toast('All changes saved!', 'ok');
+    toast('All changes saved!','ok');
     await loadPrizes();
-  } catch (e) { toast('Could not save changes', 'err'); console.error(e); }
+  } catch(e){ toast('Could not save changes','err'); console.error(e); }
 }
 
+// =========  COOLDOWNS  =========
 async function loadCooldowns() {
   try {
-    const [cooldowns, cfgArr] = await Promise.all([
-      sbGet('cooldowns?order=won_at.desc'),
-      sbGet('event_config?select=cooldown_hours&limit=1').catch(() => []),
+    const [cds, cfgA] = await Promise.all([
+      get('cooldowns?order=won_at.desc'),
+      get('event_config?select=cooldown_hours&limit=1').catch(()=>[]),
     ]);
-    const hours = (cfgArr[0]?.cooldown_hours || 8) * 3600000;
-    const now = Date.now();
-    const tbody = document.getElementById('cooldowns-body');
-    if (!cooldowns.length) {
-      tbody.innerHTML = '<tr><td colspan="5" class="empty"><span class="empty-icon">⏳</span>No cooldowns on record</td></tr>';
-      return;
-    }
-    tbody.innerHTML = cooldowns.map(c => {
-      const wonAt = new Date(c.won_at);
-      const exp = new Date(wonAt.getTime() + hours);
-      const active = now < exp.getTime();
+    const hours = (cfgA[0]?.cooldown_hours||8)*3600000, now = Date.now();
+    const tb = document.getElementById('tb-cd');
+    if (!cds.length){ tb.innerHTML='<tr><td colspan="5" class="empty"><span class="empty-ico">⏳</span>No cooldowns on record</td></tr>'; return; }
+    tb.innerHTML = cds.map(c=>{
+      const exp = new Date(new Date(c.won_at).getTime()+hours), active = now<exp;
       return `<tr>
         <td class="mono soft">${h(c.user_id)}</td>
-        <td class="muted-text">${fmtTime(c.won_at)}</td>
-        <td class="muted-text">${fmtTime(exp.toISOString())}</td>
-        <td>${active ? `<span class="cooldown-active">${msToHM(exp.getTime() - now)} left</span>` : '<span class="cooldown-expired">Expired</span>'}</td>
-        <td><button class="btn secondary small" onclick="removeCooldown('${a2(c.user_id)}')">Remove</button></td>
+        <td style="color:var(--text-m)">${fmt(c.won_at)}</td>
+        <td style="color:var(--text-m)">${fmt(exp.toISOString())}</td>
+        <td>${active?`<span style="color:var(--amber);font-weight:700;font-size:13px">${msToHM(exp-now)} left</span>`:'<span style="color:var(--text-m);font-size:13px">Expired</span>'}</td>
+        <td><button class="btn ghost sm" onclick="removeCd('${a2(c.user_id)}')">Remove</button></td>
       </tr>`;
     }).join('');
-  } catch { toast('Could not load cooldowns', 'err'); }
+  } catch { toast('Could not load cooldowns','err'); }
 }
 
-async function removeCooldown(userId) {
+async function removeCd(userId) {
+  try { await del(`cooldowns?user_id=eq.${encodeURIComponent(userId)}`); toast('Cooldown removed','ok'); await loadCooldowns(); }
+  catch { toast('Could not remove','err'); }
+}
+
+async function clearExpired() {
   try {
-    await sbDelete(`cooldowns?user_id=eq.${encodeURIComponent(userId)}`);
-    toast('Cooldown removed', 'ok');
-    await loadCooldowns();
-  } catch { toast('Could not remove cooldown', 'err'); }
+    const cfgA = await get('event_config?select=cooldown_hours&limit=1').catch(()=>[]);
+    const expiry = new Date(Date.now()-(cfgA[0]?.cooldown_hours||8)*3600000).toISOString();
+    await del(`cooldowns?won_at=lt.${expiry}`);
+    toast('Expired cooldowns cleared','ok'); await loadCooldowns();
+  } catch { toast('Could not clear','err'); }
 }
 
-async function clearExpiredCooldowns() {
-  try {
-    const cfgArr = await sbGet('event_config?select=cooldown_hours&limit=1').catch(() => []);
-    const hours = cfgArr[0]?.cooldown_hours || 8;
-    const expiry = new Date(Date.now() - hours * 3600000).toISOString();
-    await sbDelete(`cooldowns?won_at=lt.${expiry}`);
-    toast('Expired cooldowns cleared', 'ok');
-    await loadCooldowns();
-  } catch { toast('Could not clear cooldowns', 'err'); }
-}
-
+// =========  CONFIG  =========
 async function loadConfig() {
   try {
-    const cfg = await sbGet('event_config?limit=1');
-    if (!cfg || !cfg.length) return;
-    const c = cfg[0]; eventConfigCache = c;
-    document.getElementById('cfg-event-name').value = c.event_name || '';
-    document.getElementById('cfg-item-name').value = c.item_name || '';
-    document.getElementById('cfg-end-date').value = c.end_date ? c.end_date.split('T')[0] : '';
-    document.getElementById('cfg-active').value = c.event_active ? 'true' : 'false';
-    document.getElementById('cfg-closing-msg').value = c.closing_message || '';
-    document.getElementById('cfg-chance-sona').value = c.win_chance_sona ?? 0.002;
-    document.getElementById('cfg-chance-common').value = c.win_chance_common ?? 0.015;
-    document.getElementById('cfg-chance-fullbody').value = c.win_chance_fullbody ?? 0.010;
-    document.getElementById('cfg-cooldown-hours').value = c.cooldown_hours ?? 8;
+    const c = (await get('event_config?limit=1'))[0]; if(!c) return; cfgCache=c;
+    document.getElementById('c-name').value = c.event_name||'';
+    document.getElementById('c-item').value = c.item_name||'';
+    document.getElementById('c-end').value  = c.end_date?c.end_date.split('T')[0]:'';
+    document.getElementById('c-active').value = c.event_active?'true':'false';
+    document.getElementById('c-msg').value   = c.closing_message||'';
+    document.getElementById('c-cd').value    = c.cooldown_hours??8;
   } catch {}
 }
 
 async function saveConfig() {
   const body = {
-    event_name: document.getElementById('cfg-event-name').value,
-    item_name: document.getElementById('cfg-item-name').value,
-    end_date: document.getElementById('cfg-end-date').value,
-    event_active: document.getElementById('cfg-active').value === 'true',
-    closing_message: document.getElementById('cfg-closing-msg').value,
-    win_chance_sona: parseFloat(document.getElementById('cfg-chance-sona').value),
-    win_chance_common: parseFloat(document.getElementById('cfg-chance-common').value),
-    win_chance_fullbody: parseFloat(document.getElementById('cfg-chance-fullbody').value),
-    cooldown_hours: parseInt(document.getElementById('cfg-cooldown-hours').value),
+    event_name: document.getElementById('c-name').value,
+    item_name:  document.getElementById('c-item').value,
+    end_date:   document.getElementById('c-end').value,
+    event_active: document.getElementById('c-active').value==='true',
+    closing_message: document.getElementById('c-msg').value,
+    cooldown_hours: parseInt(document.getElementById('c-cd').value),
   };
   try {
-    if (eventConfigCache?.id) await sbPatch(`event_config?id=eq.${eventConfigCache.id}`, body);
-    else await sbPost('event_config', body);
-    toast('Settings saved!', 'ok');
-    await loadConfig();
-    await loadOverview();
-  } catch (e) { toast('Could not save settings', 'err'); console.error(e); }
+    if (cfgCache?.id) await patch(`event_config?id=eq.${cfgCache.id}`, body);
+    else await post('event_config', body);
+    toast('Settings saved!','ok'); await loadConfig(); await loadOverview();
+  } catch(e){ toast('Could not save','err'); console.error(e); }
 }
 
-async function endEventEarly() {
-  if (!confirm('End the event now? The bot will stop rolling prizes and post the closing message.')) return;
+async function endEvent() {
+  if (!confirm('End the event? The bot will stop rolling and post the closing message.')) return;
   try {
-    if (!eventConfigCache?.id) { toast('No event config found', 'err'); return; }
-    await sbPatch(`event_config?id=eq.${eventConfigCache.id}`, { event_active: false });
-    toast('Event ended', 'ok');
-    await loadConfig();
-    await loadOverview();
-  } catch { toast('Could not end event', 'err'); }
+    if (!cfgCache?.id){ toast('No event config found','err'); return; }
+    await patch(`event_config?id=eq.${cfgCache.id}`, {event_active:false});
+    toast('Event ended','ok'); await loadConfig(); await loadOverview();
+  } catch { toast('Could not end event','err'); }
 }
 
-function fmtTime(iso) {
+// =========  HELPERS  =========
+function buildRarityMap(list) {
+  const m = {};
+  list.forEach(r=>{ m[r.name]={bg:r.bg_color, fg:r.text_color}; });
+  // fallbacks for built-in names in case rarity_config table is empty
+  if (!m.sona)   m.sona   = {bg:'#3a2060',fg:'#c084fc'};
+  if (!m.rare)   m.rare   = {bg:'#1a3060',fg:'#90c0ff'};
+  if (!m.common) m.common = {bg:'#2a4a30',fg:'#6aaa72'};
+  return m;
+}
+
+function rarityTag(rarity, rMap) {
+  const r = rMap[rarity];
+  if (!r) return `<span class="rtag" style="background:var(--s3);color:var(--text-m);border-color:var(--border)">${h(rarity||'?')}</span>`;
+  return `<span class="rtag" style="background:${r.bg};color:${r.fg};border-color:${r.fg}">${h(rarity)}</span>`;
+}
+
+function fmt(iso) {
   if (!iso) return '--';
-  const d = new Date(iso);
-  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) + ' at ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const d=new Date(iso);
+  return d.toLocaleDateString('en-GB',{day:'numeric',month:'short'})+' at '+d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
 }
 
-function msToHM(ms) {
-  return `${Math.floor(ms / 3600000)}h ${Math.floor((ms % 3600000) / 60000)}m`;
-}
+function msToHM(ms){ return `${Math.floor(ms/3600000)}h ${Math.floor((ms%3600000)/60000)}m`; }
 
-function h(str) {
-  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
+function h(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function a2(s){ return String(s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
 
-function a2(str) {
-  return String(str || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
-}
-
-function toast(msg, type = 'ok') {
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.className = `show ${type}`;
-  clearTimeout(window._toast);
-  window._toast = setTimeout(() => { el.className = ''; }, 3200);
+function toast(msg, type='ok') {
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.className=`show ${type}`;
+  clearTimeout(window._t);
+  window._t=setTimeout(()=>{ el.className=''; },3200);
 }
 </script>
 </body>
