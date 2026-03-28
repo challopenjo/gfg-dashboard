@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GFG Event Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0e0f;
+    --surface: #161618;
+    --surface2: #1e1e21;
+    --border: #2a2a2e;
+    --accent: #e8a030;
+    --accent2: #c45c1a;
+    --green: #4caf7d;
+    --red: #e05555;
+    --blue: #5b8dee;
+    --text: #e8e6e1;
+    --muted: #6b6a66;
+    --font-mono: 'Space Mono', monospace;
+    --font-display: 'Syne', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-display);
+    min-height: 100vh;
+    font-size: 14px;
+  }
+
+  /* LOGIN */
+  #login-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 32px;
+    padding: 24px;
+    background: radial-gradient(ellipse at 50% 0%, #2a1a0a 0%, var(--bg) 60%);
+  }
+
+  .login-logo {
+    font-size: 13px;
+    font-family: var(--font-mono);
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .login-title {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    text-align: center;
+  }
+
+  .login-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    width: 100%;
+    max-width: 440px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .field label {
+    display: block;
+    font-size: 11px;
+    font-family: var(--font-mono);
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .field input {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 12px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .field input:focus { border-color: var(--accent); }
+
+  .btn {
+    background: var(--accent);
+    color: #0e0e0f;
+    border: none;
+    border-radius: 6px;
+    padding: 11px 20px;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    letter-spacing: 0.02em;
+  }
+  .btn:hover { opacity: 0.88; }
+  .btn:active { transform: scale(0.98); }
+  .btn.secondary {
+    background: var(--surface2);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn.danger { background: var(--red); color: #fff; }
+  .btn.success { background: var(--green); color: #0e0e0f; }
+  .btn.small { padding: 6px 12px; font-size: 12px; }
+
+  #login-error {
+    color: var(--red);
+    font-size: 12px;
+    font-family: var(--font-mono);
+    text-align: center;
+    display: none;
+  }
+
+  /* APP */
+  #app { display: none; min-height: 100vh; }
+
+  .topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .topbar-brand {
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+
+  .topbar-brand span { color: var(--accent); }
+
+  .event-badge {
+    font-size: 11px;
+    font-family: var(--font-mono);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 3px 8px;
+    color: var(--muted);
+  }
+
+  .event-badge.active { border-color: var(--green); color: var(--green); }
+  .event-badge.ended { border-color: var(--red); color: var(--red); }
+
+  .topbar-right { display: flex; align-items: center; gap: 10px; }
+
+  /* TABS */
+  .tabs {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex;
+    gap: 0;
+  }
+
+  .tab {
+    padding: 12px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+    white-space: nowrap;
+  }
+
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* MAIN */
+  .main { padding: 24px; max-width: 1100px; margin: 0 auto; }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* STATS ROW */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    font-family: var(--font-mono);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+
+  .stat-value {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .stat-value.accent { color: var(--accent); }
+  .stat-value.green { color: var(--green); }
+  .stat-value.red { color: var(--red); }
+
+  .stat-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+    font-family: var(--font-mono);
+  }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .progress-bar-track {
+    background: var(--surface2);
+    border-radius: 99px;
+    height: 10px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    border-radius: 99px;
+    transition: width 0.6s ease;
+  }
+
+  /* SECTION */
+  .section-title {
+    font-size: 12px;
+    font-family: var(--font-mono);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* TABLE */
+  .table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+
+  table { width: 100%; border-collapse: collapse; }
+
+  th {
+    text-align: left;
+    padding: 10px 16px;
+    font-size: 11px;
+    font-family: var(--font-mono);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+    font-weight: 400;
+  }
+
+  td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    vertical-align: middle;
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--surface2); }
+
+  .tag {
+    display: inline-block;
+    font-size: 10px;
+    font-family: var(--font-mono);
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .tag.sona { background: #3a2060; color: #c084fc; }
+  .tag.rare { background: #1a3060; color: #60a5fa; }
+  .tag.common { background: #1a3020; color: #4ade80; }
+
+  .mono { font-family: var(--font-mono); font-size: 12px; }
+  .muted { color: var(--muted); }
+
+  /* FORM GRID */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .form-grid.full { grid-template-columns: 1fr; }
+
+  .form-field { display: flex; flex-direction: column; gap: 6px; }
+
+  .form-field label {
+    font-size: 11px;
+    font-family: var(--font-mono);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .form-field input,
+  .form-field select,
+  .form-field textarea {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 9px 12px;
+    color: var(--text);
+    font-family: var(--font-display);
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+
+  .form-field input:focus,
+  .form-field select:focus,
+  .form-field textarea:focus { border-color: var(--accent); }
+
+  .form-field textarea { resize: vertical; min-height: 80px; }
+
+  .form-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .form-section-title {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* PRIZE CARDS */
+  .prize-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .prize-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .prize-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .prize-card-name { font-size: 14px; font-weight: 700; }
+
+  .prize-slots {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .prize-slots span { color: var(--accent); font-weight: 700; }
+
+  .artist-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+  }
+
+  .artist-name { font-family: var(--font-mono); }
+
+  .slot-input {
+    width: 52px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 3px 6px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-align: center;
+    outline: none;
+  }
+
+  .slot-input:focus { border-color: var(--accent); }
+
+  /* COOLDOWN TIMER */
+  .cooldown-timer {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent);
+  }
+
+  /* END EVENT */
+  .danger-zone {
+    background: var(--surface);
+    border: 1px solid var(--red);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 24px;
+  }
+
+  .danger-zone-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--red);
+    margin-bottom: 8px;
+  }
+
+  .danger-zone p {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+
+  /* EMPTY STATE */
+  .empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+    font-size: 13px;
+    font-family: var(--font-mono);
+  }
+
+  /* TOAST */
+  #toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 18px;
+    font-size: 13px;
+    font-family: var(--font-mono);
+    z-index: 9999;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none;
+    max-width: 320px;
+  }
+
+  #toast.show { opacity: 1; transform: translateY(0); }
+  #toast.ok { border-color: var(--green); color: var(--green); }
+  #toast.err { border-color: var(--red); color: var(--red); }
+
+  .spin {
+    display: inline-block;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 20px 0;
+  }
+
+  @media (max-width: 600px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+    .main { padding: 16px; }
+    .tabs { overflow-x: auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-logo">Greenfire Gallery</div>
+  <div class="login-title">Event Dashboard</div>
+  <div class="login-box">
+    <div class="field">
+      <label>Supabase Project URL</label>
+      <input type="text" id="sb-url" placeholder="https://xxxx.supabase.co" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="field">
+      <label>Supabase Anon Key</label>
+      <input type="password" id="sb-key" placeholder="eyJh..." autocomplete="off" spellcheck="false">
+    </div>
+    <div id="login-error">Could not connect. Check your URL and key.</div>
+    <button class="btn" onclick="doLogin()">Connect</button>
+  </div>
+  <div style="font-size:11px;color:var(--muted);font-family:var(--font-mono);text-align:center;">
+    Your credentials are saved in your browser only and never sent anywhere else.
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-brand">GFG <span>Dashboard</span></div>
+      <div class="event-badge" id="event-status-badge">Loading...</div>
+    </div>
+    <div class="topbar-right">
+      <button class="btn secondary small" onclick="refreshAll()">Refresh</button>
+      <button class="btn secondary small" onclick="doLogout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('overview')">Overview</div>
+    <div class="tab" onclick="switchTab('wins')">Wins</div>
+    <div class="tab" onclick="switchTab('prizes')">Prizes & Slots</div>
+    <div class="tab" onclick="switchTab('cooldowns')">Cooldowns</div>
+    <div class="tab" onclick="switchTab('config')">Event Config</div>
+  </div>
+
+  <div class="main">
+
+    <!-- OVERVIEW -->
+    <div class="tab-panel active" id="panel-overview">
+      <div class="stats-row" id="stats-row">
+        <div class="stat-card">
+          <div class="stat-label">Total Eggs</div>
+          <div class="stat-value accent" id="stat-total">--</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Claimed</div>
+          <div class="stat-value green" id="stat-claimed">--</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Remaining</div>
+          <div class="stat-value" id="stat-remaining">--</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">On Cooldown</div>
+          <div class="stat-value" id="stat-cooldowns">--</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Event Ends</div>
+          <div class="stat-value" style="font-size:16px;padding-top:4px;" id="stat-enddate">--</div>
+          <div class="stat-sub" id="stat-enddate-sub"></div>
+        </div>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span>Egg Hunt Progress</span>
+          <span id="progress-pct" style="font-family:var(--font-mono);font-size:12px;color:var(--accent);">0%</span>
+        </div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+        </div>
+      </div>
+
+      <div class="section-title">Recent Wins</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Winner</th>
+              <th>Prize</th>
+              <th>Artist</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody id="recent-wins-body">
+            <tr><td colspan="4" class="empty">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- WINS -->
+    <div class="tab-panel" id="panel-wins">
+      <div class="section-title">
+        <span>All Wins</span>
+        <button class="btn secondary small" onclick="exportWins()">Export CSV</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Winner</th>
+              <th>Prize</th>
+              <th>Rarity</th>
+              <th>Artist</th>
+              <th>Channel</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody id="all-wins-body">
+            <tr><td colspan="6" class="empty">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PRIZES -->
+    <div class="tab-panel" id="panel-prizes">
+      <div class="section-title">Remaining slots per egg -- edit and save to update live</div>
+      <div class="prize-grid" id="prize-grid">
+        <div class="empty">Loading...</div>
+      </div>
+      <button class="btn" onclick="saveSlots()">Save Slot Changes</button>
+    </div>
+
+    <!-- COOLDOWNS -->
+    <div class="tab-panel" id="panel-cooldowns">
+      <div class="section-title">
+        <span>Active Cooldowns</span>
+        <button class="btn secondary small" onclick="clearExpiredCooldowns()">Clear Expired</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>User ID</th>
+              <th>Won At</th>
+              <th>Expires</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="cooldowns-body">
+            <tr><td colspan="5" class="empty">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CONFIG -->
+    <div class="tab-panel" id="panel-config">
+      <div class="form-section">
+        <div class="form-section-title">Event Settings</div>
+        <div class="form-grid">
+          <div class="form-field">
+            <label>Event Name</label>
+            <input type="text" id="cfg-event-name" placeholder="Easter Egg Hunt 2026">
+          </div>
+          <div class="form-field">
+            <label>Item Name (egg, petal, token...)</label>
+            <input type="text" id="cfg-item-name" placeholder="egg">
+          </div>
+          <div class="form-field">
+            <label>End Date</label>
+            <input type="date" id="cfg-end-date">
+          </div>
+          <div class="form-field">
+            <label>Event Active</label>
+            <select id="cfg-active">
+              <option value="true">Active</option>
+              <option value="false">Ended / Paused</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-grid full">
+          <div class="form-field">
+            <label>Closing Message</label>
+            <textarea id="cfg-closing-msg" placeholder="The event has ended! Thank you for participating..."></textarea>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-field">
+            <label>Sona / Rare Win Chance (e.g. 0.002)</label>
+            <input type="number" id="cfg-chance-sona" step="0.001" min="0" max="1" placeholder="0.002">
+          </div>
+          <div class="form-field">
+            <label>Common Win Chance (e.g. 0.015)</label>
+            <input type="number" id="cfg-chance-common" step="0.001" min="0" max="1" placeholder="0.015">
+          </div>
+          <div class="form-field">
+            <label>Fullbody Win Chance (e.g. 0.010)</label>
+            <input type="number" id="cfg-chance-fullbody" step="0.001" min="0" max="1" placeholder="0.010">
+          </div>
+          <div class="form-field">
+            <label>Cooldown Duration (hours)</label>
+            <input type="number" id="cfg-cooldown-hours" step="1" min="1" placeholder="8">
+          </div>
+        </div>
+        <button class="btn" onclick="saveConfig()">Save Config</button>
+      </div>
+
+      <div class="danger-zone">
+        <div class="danger-zone-title">End Event Early</div>
+        <p>This will mark the event as ended in the database. The bot will stop rolling prizes and post the closing message to the announcements channel. This cannot be undone without manually editing the database.</p>
+        <button class="btn danger" onclick="endEventEarly()">End Event Now</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ---- STATE ----
+let SB_URL = '';
+let SB_KEY = '';
+let winsCache = [];
+let prizeConfigCache = [];
+let eventConfigCache = {};
+
+// ---- LOGIN ----
+window.addEventListener('load', () => {
+  const url = localStorage.getItem('gfg_sb_url');
+  const key = localStorage.getItem('gfg_sb_key');
+  if (url && key) {
+    document.getElementById('sb-url').value = url;
+    document.getElementById('sb-key').value = key;
+  }
+});
+
+async function doLogin() {
+  const url = document.getElementById('sb-url').value.trim().replace(/\/$/, '');
+  const key = document.getElementById('sb-key').value.trim();
+  if (!url || !key) return;
+
+  try {
+    const res = await sbFetch(url, key, 'wins?limit=1');
+    if (!res.ok && res.status !== 404) throw new Error('bad');
+    SB_URL = url;
+    SB_KEY = key;
+    localStorage.setItem('gfg_sb_url', url);
+    localStorage.setItem('gfg_sb_key', key);
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    document.getElementById('login-error').style.display = 'none';
+    await refreshAll();
+  } catch {
+    document.getElementById('login-error').style.display = 'block';
+  }
+}
+
+function doLogout() {
+  localStorage.removeItem('gfg_sb_url');
+  localStorage.removeItem('gfg_sb_key');
+  SB_URL = ''; SB_KEY = '';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+}
+
+// ---- SUPABASE FETCH ----
+async function sbFetch(url, key, path, options = {}) {
+  const base = url || SB_URL;
+  const k = key || SB_KEY;
+  return fetch(`${base}/rest/v1/${path}`, {
+    ...options,
+    headers: {
+      'apikey': k,
+      'Authorization': `Bearer ${k}`,
+      'Content-Type': 'application/json',
+      'Prefer': options.prefer || 'return=representation',
+      ...(options.headers || {})
+    }
+  });
+}
+
+async function sbGet(path) {
+  const res = await sbFetch(SB_URL, SB_KEY, path);
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+async function sbPost(table, body) {
+  const res = await sbFetch(SB_URL, SB_KEY, table, {
+    method: 'POST',
+    body: JSON.stringify(body),
+    prefer: 'return=representation'
+  });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+async function sbPatch(path, body) {
+  const res = await sbFetch(SB_URL, SB_KEY, path, {
+    method: 'PATCH',
+    body: JSON.stringify(body),
+    prefer: 'return=representation'
+  });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+async function sbDelete(path) {
+  const res = await sbFetch(SB_URL, SB_KEY, path, { method: 'DELETE', prefer: 'return=minimal' });
+  if (!res.ok) throw new Error(await res.text());
+}
+
+// ---- TABS ----
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach((t, i) => {
+    const panels = ['overview','wins','prizes','cooldowns','config'];
+    t.classList.toggle('active', panels[i] === name);
+  });
+  document.querySelectorAll('.tab-panel').forEach(p => {
+    p.classList.toggle('active', p.id === `panel-${name}`);
+  });
+  if (name === 'wins') loadAllWins();
+  if (name === 'prizes') loadPrizes();
+  if (name === 'cooldowns') loadCooldowns();
+  if (name === 'config') loadConfig();
+}
+
+// ---- REFRESH ALL ----
+async function refreshAll() {
+  await Promise.all([loadOverview(), loadConfig()]);
+}
+
+// ---- OVERVIEW ----
+async function loadOverview() {
+  try {
+    const wins = await sbGet('wins?order=won_at.desc&limit=200');
+    winsCache = wins;
+
+    // prize config for slot totals
+    let prizeConfig = [];
+    try { prizeConfig = await sbGet('prize_config?order=rarity.asc'); } catch {}
+    prizeConfigCache = prizeConfig;
+
+    // total slots from prize_config
+    let totalSlots = 0;
+    if (prizeConfig.length > 0) {
+      for (const p of prizeConfig) {
+        if (p.artists && p.artists.length > 0) {
+          totalSlots += p.artists.reduce((s, a) => s + (a.slots || 0), 0);
+        } else {
+          totalSlots += 1; // nitro-style
+        }
+      }
+    } else {
+      totalSlots = 44; // fallback
+    }
+
+    const claimed = wins.length;
+    const remaining = Math.max(0, totalSlots - claimed);
+    const pct = totalSlots > 0 ? Math.round((claimed / totalSlots) * 100) : 0;
+
+    document.getElementById('stat-total').textContent = totalSlots;
+    document.getElementById('stat-claimed').textContent = claimed;
+    document.getElementById('stat-remaining').textContent = remaining;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-pct').textContent = pct + '%';
+
+    // cooldowns
+    try {
+      const cooldowns = await sbGet('cooldowns?select=user_id,won_at');
+      const now = Date.now();
+      const active = cooldowns.filter(c => (now - new Date(c.won_at).getTime()) < 8 * 3600000);
+      document.getElementById('stat-cooldowns').textContent = active.length;
+    } catch { document.getElementById('stat-cooldowns').textContent = '?'; }
+
+    // end date
+    try {
+      const cfg = await sbGet('event_config?limit=1');
+      if (cfg && cfg[0]) {
+        const d = new Date(cfg[0].end_date);
+        document.getElementById('stat-enddate').textContent = d.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+        const diff = Math.ceil((d - new Date()) / 86400000);
+        document.getElementById('stat-enddate-sub').textContent = diff > 0 ? `${diff} days left` : 'Ended';
+        const badge = document.getElementById('event-status-badge');
+        badge.textContent = cfg[0].event_active ? 'Active' : 'Ended';
+        badge.className = 'event-badge ' + (cfg[0].event_active ? 'active' : 'ended');
+      }
+    } catch {}
+
+    // recent wins table
+    const tbody = document.getElementById('recent-wins-body');
+    if (wins.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="4" class="empty">No wins yet</td></tr>';
+    } else {
+      tbody.innerHTML = wins.slice(0, 10).map(w => `
+        <tr>
+          <td class="mono">${w.winner_tag || w.winner_discord_id}</td>
+          <td>${w.prize_name}</td>
+          <td class="muted mono">${w.artist_username || '--'}</td>
+          <td class="muted mono">${formatTime(w.won_at)}</td>
+        </tr>
+      `).join('');
+    }
+  } catch (e) {
+    console.error(e);
+    toast('Failed to load overview', 'err');
+  }
+}
+
+// ---- ALL WINS ----
+async function loadAllWins() {
+  try {
+    const wins = await sbGet('wins?order=won_at.desc');
+    winsCache = wins;
+    const tbody = document.getElementById('all-wins-body');
+    if (wins.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" class="empty">No wins yet</td></tr>';
+      return;
+    }
+    tbody.innerHTML = wins.map(w => `
+      <tr>
+        <td class="mono">${w.winner_tag || w.winner_discord_id}</td>
+        <td>${w.prize_name}</td>
+        <td><span class="tag ${w.rarity || 'common'}">${w.rarity || '?'}</span></td>
+        <td class="mono">${w.artist_username || '--'}</td>
+        <td class="mono muted">#${w.channel_id}</td>
+        <td class="mono muted">${formatTime(w.won_at)}</td>
+      </tr>
+    `).join('');
+  } catch (e) {
+    toast('Failed to load wins', 'err');
+  }
+}
+
+function exportWins() {
+  if (!winsCache.length) return toast('No wins to export', 'err');
+  const headers = ['winner_tag','winner_discord_id','prize_name','rarity','artist_username','artist_discord_id','channel_id','won_at'];
+  const rows = winsCache.map(w => headers.map(h => `"${(w[h]||'').toString().replace(/"/g,'""')}"`).join(','));
+  const csv = [headers.join(','), ...rows].join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = 'gfg-wins.csv';
+  a.click();
+  toast('Exported!', 'ok');
+}
+
+// ---- PRIZES ----
+async function loadPrizes() {
+  const grid = document.getElementById('prize-grid');
+  try {
+    let prizes = await sbGet('prize_config?order=rarity.asc');
+    prizeConfigCache = prizes;
+
+    // also load wins to compute used slots
+    const wins = await sbGet('wins?select=prize_id,artist_discord_id');
+    const usedMap = {};
+    for (const w of wins) {
+      if (!usedMap[w.prize_id]) usedMap[w.prize_id] = {};
+      if (w.artist_discord_id) {
+        usedMap[w.prize_id][w.artist_discord_id] = (usedMap[w.prize_id][w.artist_discord_id] || 0) + 1;
+      }
+    }
+
+    if (prizes.length === 0) {
+      grid.innerHTML = '<div class="empty" style="grid-column:1/-1">No prize config found in Supabase. Run the SQL setup first.</div>';
+      return;
+    }
+
+    grid.innerHTML = prizes.map(p => {
+      const artists = p.artists || [];
+      const totalOriginal = artists.reduce((s, a) => s + (a.slots || 0), 0) || 1;
+      const usedForPrize = usedMap[p.id] || {};
+      const usedTotal = Object.values(usedForPrize).reduce((s, v) => s + v, 0);
+      const remainingTotal = Math.max(0, totalOriginal - usedTotal);
+
+      const artistRows = artists.map(a => {
+        const used = usedForPrize[a.discordId] || 0;
+        const rem = Math.max(0, (a.slots || 0) - used);
+        return `
+          <div class="artist-row">
+            <span class="artist-name">@${a.username}</span>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="muted mono" style="font-size:11px;">${used} used</span>
+              <input class="slot-input" type="number" min="0" data-prize="${p.id}" data-artist="${a.discordId}" value="${a.slots || 0}" title="Original slots">
+            </div>
+          </div>`;
+      }).join('');
+
+      return `
+        <div class="prize-card">
+          <div class="prize-card-header">
+            <span class="prize-card-name">${p.name}</span>
+            <span class="tag ${p.rarity}">${p.rarity}</span>
+          </div>
+          <div class="prize-slots"><span>${remainingTotal}</span> / ${totalOriginal} remaining</div>
+          ${artistRows || '<div class="muted" style="font-size:12px;padding-top:6px;">No artist slots (e.g. Nitro)</div>'}
+        </div>`;
+    }).join('');
+  } catch (e) {
+    grid.innerHTML = '<div class="empty" style="grid-column:1/-1">Could not load prize config. Make sure the prize_config table exists.</div>';
+  }
+}
+
+async function saveSlots() {
+  const inputs = document.querySelectorAll('.slot-input');
+  // group by prize id
+  const changes = {};
+  inputs.forEach(input => {
+    const prizeId = input.dataset.prize;
+    const artistId = input.dataset.artist;
+    if (!changes[prizeId]) changes[prizeId] = {};
+    changes[prizeId][artistId] = parseInt(input.value) || 0;
+  });
+
+  try {
+    for (const prizeId of Object.keys(changes)) {
+      const prize = prizeConfigCache.find(p => p.id === prizeId);
+      if (!prize) continue;
+      const updatedArtists = prize.artists.map(a => ({
+        ...a,
+        slots: changes[prizeId][a.discordId] !== undefined ? changes[prizeId][a.discordId] : a.slots
+      }));
+      await sbPatch(`prize_config?id=eq.${prize.db_id}`, { artists: updatedArtists });
+    }
+    toast('Slots saved!', 'ok');
+    await loadPrizes();
+  } catch (e) {
+    toast('Failed to save slots', 'err');
+    console.error(e);
+  }
+}
+
+// ---- COOLDOWNS ----
+async function loadCooldowns() {
+  try {
+    const cooldowns = await sbGet('cooldowns?order=won_at.desc');
+    const tbody = document.getElementById('cooldowns-body');
+    const now = Date.now();
+    if (cooldowns.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" class="empty">No cooldowns on record</td></tr>';
+      return;
+    }
+    tbody.innerHTML = cooldowns.map(c => {
+      const wonAt = new Date(c.won_at);
+      const expiresAt = new Date(wonAt.getTime() + 8 * 3600000);
+      const active = now < expiresAt.getTime();
+      const remaining = active ? msToHMS(expiresAt.getTime() - now) : 'Expired';
+      return `
+        <tr>
+          <td class="mono">${c.user_id}</td>
+          <td class="mono muted">${formatTime(c.won_at)}</td>
+          <td class="mono">${expiresAt.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</td>
+          <td><span class="tag ${active ? 'sona' : 'common'}">${active ? 'Active' : 'Expired'}</span></td>
+          <td>
+            <button class="btn secondary small" onclick="removeCooldown('${c.user_id}')">Remove</button>
+          </td>
+        </tr>`;
+    }).join('');
+  } catch (e) {
+    toast('Failed to load cooldowns', 'err');
+  }
+}
+
+async function removeCooldown(userId) {
+  try {
+    await sbDelete(`cooldowns?user_id=eq.${encodeURIComponent(userId)}`);
+    toast('Cooldown removed', 'ok');
+    await loadCooldowns();
+  } catch {
+    toast('Failed to remove cooldown', 'err');
+  }
+}
+
+async function clearExpiredCooldowns() {
+  try {
+    const expiry = new Date(Date.now() - 8 * 3600000).toISOString();
+    await sbDelete(`cooldowns?won_at=lt.${expiry}`);
+    toast('Expired cooldowns cleared', 'ok');
+    await loadCooldowns();
+  } catch {
+    toast('Failed to clear cooldowns', 'err');
+  }
+}
+
+// ---- CONFIG ----
+async function loadConfig() {
+  try {
+    const cfg = await sbGet('event_config?limit=1');
+    if (!cfg || cfg.length === 0) return;
+    const c = cfg[0];
+    eventConfigCache = c;
+    document.getElementById('cfg-event-name').value = c.event_name || '';
+    document.getElementById('cfg-item-name').value = c.item_name || '';
+    document.getElementById('cfg-end-date').value = c.end_date ? c.end_date.split('T')[0] : '';
+    document.getElementById('cfg-active').value = c.event_active ? 'true' : 'false';
+    document.getElementById('cfg-closing-msg').value = c.closing_message || '';
+    document.getElementById('cfg-chance-sona').value = c.win_chance_sona || 0.002;
+    document.getElementById('cfg-chance-common').value = c.win_chance_common || 0.015;
+    document.getElementById('cfg-chance-fullbody').value = c.win_chance_fullbody || 0.010;
+    document.getElementById('cfg-cooldown-hours').value = c.cooldown_hours || 8;
+  } catch {}
+}
+
+async function saveConfig() {
+  const body = {
+    event_name: document.getElementById('cfg-event-name').value,
+    item_name: document.getElementById('cfg-item-name').value,
+    end_date: document.getElementById('cfg-end-date').value,
+    event_active: document.getElementById('cfg-active').value === 'true',
+    closing_message: document.getElementById('cfg-closing-msg').value,
+    win_chance_sona: parseFloat(document.getElementById('cfg-chance-sona').value),
+    win_chance_common: parseFloat(document.getElementById('cfg-chance-common').value),
+    win_chance_fullbody: parseFloat(document.getElementById('cfg-chance-fullbody').value),
+    cooldown_hours: parseInt(document.getElementById('cfg-cooldown-hours').value),
+  };
+
+  try {
+    if (eventConfigCache && eventConfigCache.id) {
+      await sbPatch(`event_config?id=eq.${eventConfigCache.id}`, body);
+    } else {
+      await sbPost('event_config', body);
+    }
+    toast('Config saved!', 'ok');
+    await loadConfig();
+    await loadOverview();
+  } catch (e) {
+    toast('Failed to save config', 'err');
+    console.error(e);
+  }
+}
+
+async function endEventEarly() {
+  if (!confirm('Are you sure you want to end the event? This will stop all prize rolls.')) return;
+  try {
+    if (eventConfigCache && eventConfigCache.id) {
+      await sbPatch(`event_config?id=eq.${eventConfigCache.id}`, { event_active: false });
+      toast('Event ended', 'ok');
+      await loadConfig();
+      await loadOverview();
+    } else {
+      toast('No event config found', 'err');
+    }
+  } catch {
+    toast('Failed to end event', 'err');
+  }
+}
+
+// ---- HELPERS ----
+function formatTime(iso) {
+  if (!iso) return '--';
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-GB', { day:'numeric', month:'short' }) + ' ' +
+         d.toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+}
+
+function msToHMS(ms) {
+  const h = Math.floor(ms / 3600000);
+  const m = Math.floor((ms % 3600000) / 60000);
+  return `${h}h ${m}m`;
+}
+
+function toast(msg, type = 'ok') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `show ${type}`;
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => { el.className = ''; }, 3000);
+}
+
+// Enter key on login
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('login-screen').style.display !== 'none') {
+    doLogin();
+  }
+});
+</script>
+</body>
+</html>
